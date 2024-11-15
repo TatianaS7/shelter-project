@@ -1,0 +1,25 @@
+[
+    {
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "johndoe@gmail.com",
+        "user_type": "DONOR",
+        "shelter_id": 1
+    },
+    {
+        "first_name": "Melanie",
+        "last_name": "Rose",
+        "email": "melrose@yahoo.com",
+        "user_type": "TEAM_MEMBER",
+        "user_role": "ADMIN",
+        "shelter_id": 1
+    },
+    {
+        "first_name": "Justice",
+        "last_name": "Carter",
+        "email": "jcarter3@gmail.com",
+        "user_type": "TEAM_MEMBER",
+        "user_role": "VIEWER",
+        "shelter_id": 1
+    }
+]

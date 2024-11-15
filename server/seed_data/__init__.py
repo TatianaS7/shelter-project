@@ -1,0 +1,1 @@
+from seed_data.main import seed_all

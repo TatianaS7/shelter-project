@@ -1,0 +1,19 @@
+[
+    {
+        "shelter_name": "Strength and Hope Center",
+        "address": "1234 Main St",
+        "phone": "123-456-7890",
+        "primary_email": "admin@strengthandhope.net",
+        "capacity": 50,
+        "current_occupancy": 25,
+        "current_funding": 10000,
+        "funding_needs": 7500,
+        "resource_needs": ["Clothing", "Hygiene", "Medicine" ],
+        "donations": [],
+        "user_info": {
+            "first_name": "Melanie",
+            "last_name": "Rose",
+            "email": "melrose@yahoo.com"
+        }
+    }
+]

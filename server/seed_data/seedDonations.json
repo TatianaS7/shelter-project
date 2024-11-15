@@ -1,0 +1,15 @@
+[
+  {
+    "user_id": 1,
+    "shelter_id": 1,
+    "donation_type": "MONETARY",
+    "donation_amount": 100
+  },
+  {
+    "user_id": 1,
+    "shelter_id": 1,
+    "donation_type": "PHYSICAL",
+    "donated_items": ["Clothing"],
+    "note": "Women's jackets and pants"
+  }
+]
