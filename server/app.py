@@ -15,9 +15,11 @@ def create_app():
     
     # Import routes
     from routes.shelter import shelters
+    from routes.staff import staff
 
     # Register the routes
     app.register_blueprint(shelters, url_prefix='/shelters')
+    app.register_blueprint(staff, url_prefix='/shelters')
 
     with app.app_context():
         db.drop_all()
