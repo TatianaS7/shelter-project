@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from _types import DonationType, UserRole, UserType, ResourceNeed, ShelterStatus, DonationStatus
+from _types import DonationType, UserRole, UserType, ResourceNeed, ShelterStatus, DonationStatus, ReportType
 
 
 class Shelter(Schema):
@@ -40,3 +40,47 @@ class Donation(Schema):
     donation_amount = fields.Float()
     donated_items = fields.List(fields.Str(), allow_none=True)
     note = fields.Str(allow_none=True)
+
+
+class Report(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    report_type = fields.Enum(ReportType)
+    start_date = fields.DateTime()
+    end_date = fields.DateTime()
+    generated_by = fields.Int()
+    shelter_id = fields.Int()
+    data = fields.Dict()
+    file_path = fields.Str()
+
+
+class User_Donations_Report(Schema):
+    id = fields.Int(dump_only=True)
+    total_donations_amount = fields.Float()
+    total_donations_count = fields.Int()
+    total_items_donated = fields.Int()
+    donations_log = fields.Dict()
+
+
+class Shelter_Donations_Report(Schema):
+    id = fields.Int(dump_only=True)
+    total_donations_amount = fields.Float()
+    total_donations_count = fields.Int()
+    total_items_donated = fields.Int()
+    donations_log = fields.Dict()
+
+
+class Shelter_Summary_Report(Schema):
+    id = fields.Int(dump_only=True)
+    current_occupancy = fields.Int()
+    remaining_capacity = fields.Int()
+    current_funding = fields.Float()
+    funding_summary = fields.Dict()
+    donations_summary = fields.Dict()
+    resource_needs_summary = fields.Dict()
+
+
+class Shelter_Resources_Report(Schema):
+    id = fields.Int(dump_only=True)
+    resource_needs = fields.Dict()
+    resource_change_log = fields.Dict()

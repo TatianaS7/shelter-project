@@ -35,3 +35,9 @@ class DonationStatus(Enum):
     ACCEPTED = 'Accepted'
     REJECTED = 'Rejected'
     CANCELLED = 'Cancelled'
+
+class ReportType(Enum):
+    USER_DONATIONS = 'User Donations'
+    SHELTER_DONATIONS = 'Shelter Donations'
+    SHELTER_SUMMARY = 'Shelter Summary'
+    SHELTER_RESOURCES = 'Shelter Resources'
