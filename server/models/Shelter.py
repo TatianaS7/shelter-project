@@ -1,7 +1,6 @@
 # Model for Shelters
 from connection import db
-from _types import UserRole, UserType, ShelterStatus
-from models import User
+from _types import UserType, ShelterStatus
 
 class Shelter(db.Model):
     __tablename__ = 'shelter'

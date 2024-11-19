@@ -1,10 +1,11 @@
 from marshmallow import Schema, fields
 
-from _types import DonationType, UserRole, UserType, ResourceNeed
+from _types import DonationType, UserRole, UserType, ResourceNeed, ShelterStatus, DonationStatus
 
 
 class Shelter(Schema):
     id = fields.Int(dump_only=True)
+    status = fields.Enum(ShelterStatus)
     shelter_name = fields.Str()
     address = fields.Str()
     phone = fields.Str()
@@ -32,6 +33,7 @@ class User(Schema):
 
 class Donation(Schema):
     id = fields.Int(dump_only=True)
+    status = fields.Enum(DonationStatus)
     user_id = fields.Int()
     shelter_id = fields.Int()
     donation_type = fields.Enum(DonationType)

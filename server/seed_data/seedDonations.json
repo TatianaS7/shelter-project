@@ -10,6 +10,7 @@
     "shelter_id": 1,
     "donation_type": "PHYSICAL",
     "donated_items": ["Clothing"],
-    "note": "Women's jackets and pants"
+    "note": "Women's jackets and pants",
+    "status": "ACCEPTED"
   }
 ]

@@ -32,5 +32,6 @@ class UserStatus(Enum):
 
 class DonationStatus(Enum):
     PENDING = 'Pending'
-    RECEIVED = 'Received'
+    ACCEPTED = 'Accepted'
     REJECTED = 'Rejected'
+    CANCELLED = 'Cancelled'

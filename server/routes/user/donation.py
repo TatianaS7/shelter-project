@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
+from sqlalchemy.orm.attributes import flag_modified
 from connection import db
 from models import Donation, Shelter
-from _types import DonationType, ResourceNeed, ShelterStatus
+from _types import DonationType, DonationStatus, ResourceNeed, ShelterStatus
 
 user_donations = Blueprint('user_donations', __name__)
 
@@ -24,6 +25,7 @@ def create_donation(user_id):
             
         donation = Donation(
             user_id=user_id,
+            status=DonationStatus.PENDING,
             shelter_id=data['shelter_id'],
             donation_type=donation_type,
             donation_amount=data.get('donation_amount', None),
@@ -57,6 +59,28 @@ def get_donation_by_id(user_id, donation_id):
         donation = Donation.query.filter_by(id=donation_id, user_id=user_id).first()
         if not donation:
             return jsonify({'error': 'Donation not found'}), 404
+        
+        return jsonify(donation.serialize()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+    
+
+# Cancel A Donation
+@user_donations.route('/<int:user_id>/donations/<int:donation_id>/cancel', methods=['PUT'])
+def cancel_donation(user_id, donation_id):
+    try:
+        donation = Donation.query.filter_by(id=donation_id, user_id=user_id).first()
+        if not donation:
+            return jsonify({'error': 'Donation not found'}), 404
+        
+        if donation.status == DonationStatus.ACCEPTED:
+            return jsonify({'error': 'Donation has already been accepted and cannot be cancelled'}), 400
+        elif donation.status == DonationStatus.REJECTED:
+            return jsonify({'error': 'Donation has already been rejected and cannot be cancelled'}), 400
+        
+        donation.status = DonationStatus.CANCELLED
+        flag_modified(donation, 'status')
+        db.session.commit()
         
         return jsonify(donation.serialize()), 200
     except Exception as e:

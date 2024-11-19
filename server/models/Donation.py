@@ -1,11 +1,12 @@
 # Model for Donation
 from connection import db
-from _types import DonationType, ResourceNeed, UserRole, UserType
+from _types import DonationType, DonationStatus, ResourceNeed, UserRole, UserType
 
 class Donation(db.Model):
     __tablename__ = 'donation'
 
     id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.Enum(DonationStatus), nullable=False, default=DonationStatus.PENDING)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     shelter_id = db.Column(db.Integer, db.ForeignKey('shelter.id'), nullable=False)
     donation_type = db.Column(db.Enum(DonationType), nullable=False)
@@ -13,7 +14,8 @@ class Donation(db.Model):
     donated_items = db.Column(db.JSON, nullable=True)
     note = db.Column(db.String(100), nullable=True)
 
-    def __init__(self, user_id, shelter_id, donation_type, donation_amount, donated_items, note):
+    def __init__(self, status, user_id, shelter_id, donation_type, donation_amount, donated_items, note):
+        self.status = status
         self.user_id = user_id
         self.shelter_id = shelter_id
         self.donation_type = donation_type
@@ -24,6 +26,7 @@ class Donation(db.Model):
     def serialize(self):
         return {
             'id': self.id,
+            'status': self.status.value,
             'user_id': self.user_id,
             'shelter_id': self.shelter_id,
             'donation_type': self.donation_type.value,

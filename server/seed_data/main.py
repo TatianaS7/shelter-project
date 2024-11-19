@@ -1,7 +1,7 @@
 from models import User, Donation, Shelter
 import json
 from connection import db
-from _types import UserRole, UserType, DonationType, ResourceNeed, ShelterStatus
+from _types import UserRole, UserType, DonationType, ResourceNeed, ShelterStatus, DonationStatus
 
 def seed_shelters():
     db.session.query(Shelter).delete()
@@ -85,6 +85,7 @@ def seed_donations():
         for donation in data:
             donated_items = None
             donation_amount = None
+            donation_status = None
 
             donation_type = DonationType[donation['donation_type'].upper()]
 
@@ -94,9 +95,15 @@ def seed_donations():
             elif donation_type == DonationType.PHYSICAL:
                 donated_items = donation['donated_items']
                 donation_amount = None
+
+            if 'status' not in donation:
+                donation_status = DonationStatus.PENDING
+            else:
+                donation_status = DonationStatus[donation['status'].upper()]
             
             new_donation = Donation(
                 user_id=donation['user_id'],
+                status=donation_status,
                 shelter_id=donation['shelter_id'],
                 donation_type=donation['donation_type'],
                 donation_amount=donation_amount,
