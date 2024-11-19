@@ -1,7 +1,7 @@
 from models import User, Donation, Shelter
 import json
 from connection import db
-from _types import UserRole, UserType, DonationType, ResourceNeed
+from _types import UserRole, UserType, DonationType, ResourceNeed, ShelterStatus
 
 def seed_shelters():
     db.session.query(Shelter).delete()
@@ -28,6 +28,7 @@ def seed_shelters():
 
             # Create shelter and associate with admin user        
             new_shelter = Shelter(
+                status=ShelterStatus.ACTIVE,
                 shelter_name=shelter['shelter_name'], 
                 address=shelter['address'], 
                 phone=shelter['phone'], 

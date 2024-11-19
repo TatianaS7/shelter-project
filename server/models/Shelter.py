@@ -1,12 +1,13 @@
 # Model for Shelters
 from connection import db
-from _types import UserRole, UserType
+from _types import UserRole, UserType, ShelterStatus
 from models import User
 
 class Shelter(db.Model):
     __tablename__ = 'shelter'
 
     id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.Enum(ShelterStatus), nullable=False, default=ShelterStatus.ACTIVE)
     shelter_name = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(100), nullable=False)
@@ -19,7 +20,8 @@ class Shelter(db.Model):
     donations = db.relationship('Donation', backref='shelter', lazy=True)
     staff = db.relationship('User', backref='shelter', lazy=True)
 
-    def __init__(self, shelter_name, address, phone, primary_email, capacity, current_occupancy, current_funding, funding_needs, resource_needs, user_info, donations=None, staff=None):
+    def __init__(self, status, shelter_name, address, phone, primary_email, capacity, current_occupancy, current_funding, funding_needs, resource_needs, user_info, donations=None, staff=None):
+        self.status = status
         self.shelter_name = shelter_name
         self.address = address
         self.phone = phone
@@ -39,6 +41,7 @@ class Shelter(db.Model):
     def serialize(self):
         return {
             'id': self.id,
+            'status': self.status.value,
             'shelter_name': self.shelter_name,
             'address': self.address,
             'phone': self.phone,

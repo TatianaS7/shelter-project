@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from connection import db
-from models import Donation
-from _types import DonationType, ResourceNeed
+from models import Donation, Shelter
+from _types import DonationType, ResourceNeed, ShelterStatus
 
 user_donations = Blueprint('user_donations', __name__)
 
@@ -11,6 +11,13 @@ user_donations = Blueprint('user_donations', __name__)
 def create_donation(user_id):
     try:
         data = request.get_json()
+
+        shelter = Shelter.query.filter_by(id=data['shelter_id']).first()
+        if not shelter:
+            return jsonify({'error': 'Shelter not found'}), 404
+        
+        if shelter.status == ShelterStatus.INACTIVE:
+            return jsonify({'error': 'Shelter is inactive and cannot receive donations'}), 400
 
         donation_type = DonationType[data['donation_type'].upper()]
         donated_items = [ResourceNeed[item.upper()].value for item in data['donated_items']] if data.get('donated_items', None) else None

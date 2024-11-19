@@ -21,3 +21,16 @@ class ResourceNeed(Enum):
 class DonationType(Enum):
     MONETARY = 'Monetary'
     PHYSICAL = 'Physical'      
+
+class ShelterStatus(Enum):
+    ACTIVE = 'Active'
+    INACTIVE = 'Inactive'
+
+class UserStatus(Enum):
+    ACTIVE = 'Active'
+    INACTIVE = 'Inactive'
+
+class DonationStatus(Enum):
+    PENDING = 'Pending'
+    RECEIVED = 'Received'
+    REJECTED = 'Rejected'
