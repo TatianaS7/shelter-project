@@ -1,6 +1,7 @@
 # Model for Donation
 from connection import db
 from _types import DonationType, DonationStatus, ResourceNeed, UserRole, UserType
+from datetime import datetime
 
 class Donation(db.Model):
     __tablename__ = 'donation'
@@ -13,6 +14,7 @@ class Donation(db.Model):
     donation_amount = db.Column(db.Float, nullable=True)
     donated_items = db.Column(db.JSON, nullable=True)
     note = db.Column(db.String(100), nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, status, user_id, shelter_id, donation_type, donation_amount, donated_items, note):
         self.status = status
@@ -32,6 +34,7 @@ class Donation(db.Model):
             'donation_type': self.donation_type.value,
             'donation_amount': self.donation_amount,
             'donated_items': self.donated_items,
-            'note': self.note
+            'note': self.note,
+            'created_at': self.created_at.isoformat()
         }
     

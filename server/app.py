@@ -16,6 +16,7 @@ def create_app():
     # Import routes
     from routes.shelter import shelters, staff, resources, donations
     from routes.user import users, user_donations
+    from routes.reports import reports
 
     # Register the routes
     # SHELTER ROUTES
@@ -27,6 +28,9 @@ def create_app():
     # USER ROUTES
     app.register_blueprint(users, url_prefix='/api/users')
     app.register_blueprint(user_donations, url_prefix='/api/users')
+
+    # REPORTS ROUTES
+    app.register_blueprint(reports, url_prefix='/api/reports')
 
     with app.app_context():
         db.drop_all()

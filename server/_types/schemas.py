@@ -72,9 +72,9 @@ class Shelter_Donations_Report(Schema):
 
 class Shelter_Summary_Report(Schema):
     id = fields.Int(dump_only=True)
+    capacity = fields.Int()
     current_occupancy = fields.Int()
     remaining_capacity = fields.Int()
-    current_funding = fields.Float()
     funding_summary = fields.Dict()
     donations_summary = fields.Dict()
     resource_needs_summary = fields.Dict()

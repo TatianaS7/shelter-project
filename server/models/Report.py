@@ -12,16 +12,18 @@ class Report(db.Model):
     end_date = db.Column(db.DateTime, nullable=False)
     generated_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     shelter_id = db.Column(db.Integer, db.ForeignKey('shelter.id'), nullable=True)
+    filtered_by = db.Column(db.JSON, nullable=True)
     data = db.Column(db.JSON, nullable=False)
     file_path = db.Column(db.String(255), nullable=True)
 
-    def __init__(self, name, report_type, start_date, end_date, generated_by, shelter_id, data, file_path):
+    def __init__(self, name, report_type, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path):
         self.name = name
         self.report_type = report_type
         self.start_date = start_date
         self.end_date = end_date
         self.generated_by = generated_by
         self.shelter_id = shelter_id
+        self.filtered_by = filtered_by
         self.data = data
         self.file_path = file_path
 
@@ -34,6 +36,7 @@ class Report(db.Model):
             'end_date': self.end_date,
             'generated_by': self.generated_by,
             'shelter_id': self.shelter_id,
+            'filtered_by': self.filtered_by,
             'data': self.data,
             'file_path': self.file_path
         }
@@ -49,8 +52,8 @@ class User_Donations_Report(Report):
     total_items_donated = db.Column(db.Integer, nullable=False)
     donations_log = db.Column(db.JSON, nullable=False)
 
-    def __init__(self, name, start_date, end_date, generated_by, data, file_path):
-        super().__init__(name, ReportType.USER_DONATIONS, start_date, end_date, generated_by, None, data, file_path)
+    def __init__(self, name, start_date, end_date, generated_by, filtered_by, data, file_path):
+        super().__init__(name, ReportType.USER_DONATIONS, start_date, end_date, generated_by, None, filtered_by, data, file_path)
         
 
 # Shelter Donations Report
@@ -63,8 +66,8 @@ class Shelter_Donations_Report(Report):
     total_items_donated = db.Column(db.Integer, nullable=False)
     donations_log = db.Column(db.JSON, nullable=False)
 
-    def __init__(self, name, start_date, end_date, generated_by, shelter_id, data, file_path):
-        super().__init__(name, ReportType.SHELTER_DONATIONS, start_date, end_date, generated_by, shelter_id, data, file_path)
+    def __init__(self, name, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path):
+        super().__init__(name, ReportType.SHELTER_DONATIONS, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path)
 
 
 # Shelter Summary Report
@@ -72,15 +75,15 @@ class Shelter_Summary_Report(Report):
     __tablename__ = 'shelter_summary_report'
 
     id = db.Column(db.Integer, db.ForeignKey('report.id'), primary_key=True)
+    capacity = db.Column(db.Integer, nullable=False)
     current_occupancy = db.Column(db.Integer, nullable=False)
     remaining_capacity = db.Column(db.Integer, nullable=False)
-    current_funding = db.Column(db.Float, nullable=False)
     funding_summary = db.Column(db.JSON, nullable=False)
     donations_summary = db.Column(db.JSON, nullable=False)
     resource_needs_summary = db.Column(db.JSON, nullable=False)
 
-    def __init__(self, name, start_date, end_date, generated_by, shelter_id, data, file_path):
-        super().__init__(name, ReportType.SHELTER_SUMMARY, start_date, end_date, generated_by, shelter_id, data, file_path)
+    def __init__(self, name, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path):
+        super().__init__(name, ReportType.SHELTER_SUMMARY, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path)
 
 
 # Shelter Resources Report
@@ -91,5 +94,5 @@ class Shelter_Resources_Report(Report):
     resource_needs = db.Column(db.JSON, nullable=False)
     resource_change_log = db.Column(db.JSON, nullable=False)
 
-    def __init__(self, name, start_date, end_date, generated_by, shelter_id, data, file_path):
-        super().__init__(name, ReportType.SHELTER_RESOURCES, start_date, end_date, generated_by, shelter_id, data, file_path)
+    def __init__(self, name, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path):
+        super().__init__(name, ReportType.SHELTER_RESOURCES, start_date, end_date, generated_by, shelter_id, filtered_by, data, file_path)
