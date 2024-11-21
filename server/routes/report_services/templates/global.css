@@ -11,6 +11,11 @@ p {
     font-size: 14pt
 }
 
+li {
+    list-style: none;
+    font-size: 10pt;
+}
+
 .summary {
     text-align: center;
 }
