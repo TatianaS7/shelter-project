@@ -1,0 +1,29 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.donations-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    page-break-inside: auto;
+}
+
+.donations-table th, .donations-table td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+thead {
+    background-color: lavender;
+    display: table-header-group;
+    font-weight: bold;
+}
+
+hr {
+    background-color: lavender;
+}
+
+span {
+    font-weight: lighter;
+}

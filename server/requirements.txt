@@ -1,5 +1,7 @@
 pandas
 pydantic
+weasyprint
+openpyxl
 fastapi
 uvicorn
 SQLAlchemy

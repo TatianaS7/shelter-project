@@ -1,7 +1,25 @@
 from flask import jsonify
-from models import Shelter
+from models import Shelter, Report, User
 from _types import ReportType, DonationType, DonationStatus
+from connection import db
 import datetime
+import json
+import os
+import pandas as pd
+from weasyprint import HTML
+from jinja2 import Environment, FileSystemLoader
+
+
+# Datetime Formatter
+def format_datetime(value, format="%Y-%m-%d %H:%M:%S"):
+    if value is None:
+        return ""
+    return datetime.datetime.fromisoformat(value).strftime(format)
+
+# Setup Jinja2 Environment
+env = Environment(loader=FileSystemLoader('server/routes/report_services/templates'))
+env.filters['datetime'] = format_datetime
+
 
 def generate_shelter_donations_report(data):
     try:
@@ -53,24 +71,59 @@ def generate_shelter_donations_report(data):
         total_donations_amount = sum([donation.donation_amount for donation in donations if donation.donation_type == DonationType.MONETARY])
         total_donations_count = len(donations)
         total_items_donated = sum([len(donation.donated_items) for donation in donations if donation.donated_items is not None])
-        donations_log = [donation.serialize() for donation in donations]
 
-        report = {
-            "name": report_name,
-            "report_type": ReportType.SHELTER_DONATIONS.value,
-            "start_date": start_date,
-            "end_date": end_date,
-            "generated_by": data['user_id'],
-            "shelter_id": shelter_id,
-            "filtered_by": filtered_by,
-            "data": {
+        report_data = {
                 "total_donations_amount": total_donations_amount,
                 "total_donations_count": total_donations_count,
                 "total_items_donated": total_items_donated,
-                "donations_log": donations_log
-            }
+                "donations_log": [donation.serialize() for donation in donations]
         }
 
-        return jsonify(report), 200
+        report = Report(
+            name=report_name,
+            report_type=ReportType.SHELTER_DONATIONS,
+            start_date=start_date,
+            end_date=end_date,
+            generated_by=data['user_id'],
+            shelter_id=shelter_id,
+            filtered_by=filtered_by,
+            data=report_data,
+            file_path=None
+        )
+        db.session.add(report)
+        db.session.commit()
+
+        return jsonify(report.serialize()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+    
+
+# Download Report
+def download_shelter_donations_report(report, file_format):
+    try:
+        os.makedirs('reports', exist_ok=True)
+        file_path = f"reports/{report.name}.{file_format}"
+
+        shelter = Shelter.query.get(report.shelter_id)
+        user = User.query.get(report.generated_by)
+        shelter_name = shelter.shelter_name
+   
+        if file_format == 'pdf':
+            # Load HTML Template
+            with open('server/routes/report_services/templates/shelter_donations_template.html', 'r') as file:
+                template = env.get_template('shelter_donations_template.html')
+            html_content = template.render(report=report, shelter_name=shelter_name, generated_by=user)  
+            HTML(string=html_content, base_url='server/routes/report_services/templates').write_pdf(file_path)    
+        elif file_format == 'xlsx':
+            df = pd.DataFrame(report.data['donations_log'])
+            df.to_excel(file_path, index=False, engine='openpyxl')
+        else:
+            return None, 'Invalid file format'
+        
+        # Update report file path
+        report.file_path = file_path
+        db.session.commit()
+        
+        return file_path, None
     except Exception as e:
         return jsonify({'error': str(e)}), 400
