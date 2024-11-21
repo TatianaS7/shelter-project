@@ -2,6 +2,19 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+    font-size: 14pt
+}
+
+.summary {
+    text-align: center;
+}
+
 .donations-table {
     border-collapse: collapse;
     width: 100%;
@@ -22,8 +35,20 @@ thead {
 
 hr {
     background-color: lavender;
+    border: none;
+    height: 2px;
 }
 
 span {
     font-weight: lighter;
+}
+
+@page {
+    size: A4;
+    margin: 20mm;
+    @bottom-center {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 14px;
+        color: rgb(36, 36, 59);
+    }
 }
