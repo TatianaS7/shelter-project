@@ -17,7 +17,7 @@
             {% endif %}
         </div>
 
-        <div class="details" style="text-align: right;">
+        <div class="details" style="text-align: left;">
             <h5>Start Date: <span>{{ report.start_date.strftime("%B %d, %Y") }}</span></h5>
             <h5>End Date: <span>{{ report.end_date.strftime("%B %d, %Y") }}</span></h5>
             {% if report.report_type.value == "Shelter Donations" %}

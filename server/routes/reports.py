@@ -5,7 +5,8 @@ import json
 from connection import db
 from models import Report, User
 from _types import UserType, ReportType
-from routes.report_services import generate_shelter_resources_report, generate_user_donations_report, download_user_donations_report, download_shelter_donations_report, generate_shelter_donations_report, generate_shelter_summary_report
+from routes.report_services import generate_shelter_resources_report, generate_shelter_summary_report
+from routes.report_services import generate_donations_report, download_donations_report
 
 reports = Blueprint('reports', __name__)
 
@@ -28,13 +29,15 @@ def generate_report():
 
         # Generate User Donations Report
         if report_type == ReportType.USER_DONATIONS.value:
-            return generate_user_donations_report(data)
+            # return generate_user_donations_report(data)
+            return generate_donations_report(data)
 
         # Generate Shelter Donations Report
         if report_type == ReportType.SHELTER_DONATIONS.value:
             if user.user_type != UserType.TEAM_MEMBER:
                 return jsonify({'error': 'Unauthorized'}), 401
-            return generate_shelter_donations_report(data)
+            # return generate_shelter_donations_report(data)
+            return generate_donations_report(data)
 
         # Generate Shelter Summary Report
         if report_type == ReportType.SHELTER_SUMMARY.value:
@@ -68,13 +71,15 @@ def download_report(report_id):
 
         # Download User Donations Report
         if report_type == ReportType.USER_DONATIONS.value:
-            return download_user_donations_report(report, file_format)
+            # return download_user_donations_report(report, file_format)
+            return download_donations_report(report, file_format)
 
         # Download Shelter Donations Report
         if report_type == ReportType.SHELTER_DONATIONS.value:
             if user.user_type != UserType.TEAM_MEMBER:
                 return jsonify({'error': 'Unauthorized'}), 401
-            return download_shelter_donations_report(report, file_format)
+            # return download_shelter_donations_report(report, file_format)
+            return download_donations_report(report, file_format)
 
         # Download Shelter Summary Report
         if report_type == ReportType.SHELTER_SUMMARY.value:
