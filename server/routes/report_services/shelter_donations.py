@@ -3,7 +3,6 @@ from models import Shelter, Report, User
 from _types import ReportType, DonationType, DonationStatus
 from connection import db
 import datetime
-import json
 import os
 import pandas as pd
 from weasyprint import HTML
@@ -101,6 +100,10 @@ def generate_shelter_donations_report(data):
 # Download Report
 def download_shelter_donations_report(report, file_format):
     try:
+        # Make sure report exists
+        if not report:
+            return jsonify({'error': 'Report not found'}), 400
+        
         os.makedirs('reports', exist_ok=True)
         file_path = f"reports/{report.name}.{file_format}"
 
@@ -110,15 +113,14 @@ def download_shelter_donations_report(report, file_format):
    
         if file_format == 'pdf':
             # Load HTML Template
-            with open('server/routes/report_services/templates/shelter_donations_template.html', 'r') as file:
-                template = env.get_template('shelter_donations_template.html')
+            template = env.get_template('donations_template.html')
             html_content = template.render(report=report, shelter_name=shelter_name, generated_by=user)  
             HTML(string=html_content, base_url='server/routes/report_services/templates').write_pdf(file_path)    
         elif file_format == 'xlsx':
             df = pd.DataFrame(report.data['donations_log'])
             df.to_excel(file_path, index=False, engine='openpyxl')
         else:
-            return None, 'Invalid file format'
+            return jsonify({'error': 'Invalid file format'}), 400
         
         # Update report file path
         report.file_path = file_path
