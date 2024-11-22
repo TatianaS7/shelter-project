@@ -1,3 +1,5 @@
 from routes.report_services.shelter_resources import generate_shelter_resources_report
-from routes.report_services.shelter_summary import generate_shelter_summary_report
+from routes.report_services.shelter_summary import generate_shelter_summary_report, download_shelter_summary_report
 from routes.report_services.donations import generate_donations_report, download_donations_report
+
+from routes.report_services.charts.shelter_capacity_chart import generate_capacity_chart

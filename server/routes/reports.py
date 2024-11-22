@@ -5,7 +5,7 @@ import json
 from connection import db
 from models import Report, User
 from _types import UserType, ReportType
-from routes.report_services import generate_shelter_resources_report, generate_shelter_summary_report
+from routes.report_services import generate_shelter_resources_report, generate_shelter_summary_report, download_shelter_summary_report
 from routes.report_services import generate_donations_report, download_donations_report
 
 reports = Blueprint('reports', __name__)

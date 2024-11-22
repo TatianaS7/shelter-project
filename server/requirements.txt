@@ -1,6 +1,8 @@
 pandas
 pydantic
 weasyprint
+matplotlib
+seaborn
 openpyxl
 fastapi
 uvicorn
