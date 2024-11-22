@@ -22,7 +22,7 @@ env.filters['datetime'] = format_datetime
 
 def generate_shelter_summary_report(data):
     try:
-        from routes.report_services import generate_capacity_chart
+        from routes.report_services import generate_funding_graph
 
         # Extract data
         shelter_id = data['shelter_id']
@@ -55,8 +55,8 @@ def generate_shelter_summary_report(data):
         for donation in donations_log:
             donation.pop('shelter_id')
         
-        # Generate capacity chart
-        capacity_chart_path = generate_capacity_chart(shelter.capacity, shelter.current_occupancy, shelter.remaining_capacity())
+        # Generate funding chart
+        funding_graph_path = generate_funding_graph(shelter.current_funding, shelter.funding_needs)
 
         # Generate report data
         funding_summary = {
@@ -81,7 +81,7 @@ def generate_shelter_summary_report(data):
                 "funding_summary": funding_summary,
                 "donations_summary": donations_summary,
                 "resource_needs_summary": resource_needs_summary,
-                "capacity_chart": capacity_chart_path
+                "funding_graph": funding_graph_path
         }
 
         report = Report(

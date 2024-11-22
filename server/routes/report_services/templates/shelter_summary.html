@@ -27,16 +27,18 @@
         </div>
     </div><hr><br>
 
-    <div class="flex">
-        <div class="shelter-info">
-            <h2>Shelter Capacity</h2>
-            <img src="../charts/capacity-chart.png" alt="Capacity Chart">
+    <h2 style="font-size: 23pt;">SUMMARY</h2>
+    <div class="flex" style="justify-content: space-between;">
+        <div class="shelter-info" style="width: 50%;">
+            <h2>Capacity</h2><br>
+            <h3>Total Capacity: <span>{{ report.data.capacity }}</span></h3>
+            <h3>Current Occupancy: <span>{{ report.data.current_occupancy }}</span></h3>
+            <h3>Remaining Capacity: <span>{{ report.data.remaining_capacity }}</span></h3>
         </div>
 
-        <div class="funding-summary">
-            <h2>Funding</h2>
-            <h4>Current Funding: <span>${{ report.data.funding_summary.current_funding }}</span></h4>
-            <h4>Funding Needs: <span>${{ report.data.funding_summary.funding_needs }}</span></h4>
+        <div class="funding-summary" >
+            <h2 style="text-align: center;">Funding</h2><br>
+            <img src="../charts/funding-graph.png" alt="Funding Graph">
         </div>
     </div>
 
@@ -57,7 +59,7 @@
         </div>
     </div><br><hr>
 
-    <h2>Donations Log</h2>
+    <h2>DONATIONS LOG</h2>
     <table class="donations-table">
         <thead>
             <tr>

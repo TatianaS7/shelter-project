@@ -7,10 +7,24 @@
   },
   {
     "user_id": 1,
-    "shelter_id": 1,
+    "shelter_id": 2,
     "donation_type": "PHYSICAL",
     "donated_items": ["Clothing"],
     "note": "Women's jackets and pants",
+    "status": "ACCEPTED"
+  },
+  {
+    "user_id": 3,
+    "shelter_id": 1,
+    "donation_type": "MONETARY",
+    "donation_amount": 50
+  },
+  {
+    "user_id": 5,
+    "shelter_id": 2,
+    "donation_type": "PHYSICAL",
+    "donated_items": ["Hygiene"],
+    "note": "Tampons, Diapers, Wipes",
     "status": "ACCEPTED"
   }
 ]

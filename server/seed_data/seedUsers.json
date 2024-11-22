@@ -1,15 +1,15 @@
 [
     {
         "first_name": "John",
-        "last_name": "Doe",
-        "email": "johndoe@gmail.com",
+        "last_name": "Walters",
+        "email": "jwalters@gmail.com",
         "user_type": "DONOR",
         "shelter_id": 1
     },
     {
         "first_name": "Melanie",
         "last_name": "Rose",
-        "email": "melrose@yahoo.com",
+        "email": "melrose@strengthandhope.org",
         "user_type": "TEAM_MEMBER",
         "user_role": "ADMIN",
         "shelter_id": 1
@@ -18,8 +18,22 @@
         "first_name": "Justice",
         "last_name": "Carter",
         "email": "jcarter3@gmail.com",
+        "user_type": "DONOR",
+        "shelter_id": 2
+    },
+    {
+        "first_name": "Samantha",
+        "last_name": "Smith",
+        "email": "samanthasmith@elmwomenandchildren.org",
         "user_type": "TEAM_MEMBER",
-        "user_role": "VIEWER",
-        "shelter_id": 1
+        "user_role": "ADMIN",
+        "shelter_id": 2
+    },
+    {
+        "first_name": "Linda",
+        "last_name": "Johnson",
+        "email": "lindaj@yahoo.com",
+        "user_type": "DONOR",
+        "shelter_id": 3
     }
 ]

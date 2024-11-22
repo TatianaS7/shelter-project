@@ -1,3 +1,7 @@
+/* * {
+    border: dashed red 1pt;
+} */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -8,7 +12,7 @@ body {
 }
 
 .header {
-    width: 50%;
+    width: 65%;
 }
 
 p {
