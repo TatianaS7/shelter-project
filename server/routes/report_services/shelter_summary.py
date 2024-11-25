@@ -46,7 +46,7 @@ def generate_shelter_summary_report(data):
         donations_in_range = [donation for donation in shelter.donations if start_date <= donation.created_at <= end_date]
         
         # Generate report
-        current_date = datetime.datetime.now().strftime("%m-%d-%Y")
+        current_date = datetime.datetime.now().strftime("%Y%m%d%H%M")        
         shelter_name = shelter.shelter_name.replace(" ", "_")
         report_name = f"{shelter_name}_Resources_Report_{current_date}"
 
@@ -90,6 +90,7 @@ def generate_shelter_summary_report(data):
             start_date=start_date,
             end_date=end_date,
             generated_by=data['user_id'],
+            generated_at=datetime.datetime.now(),
             shelter_id=shelter_id,
             filtered_by={},
             data=report_data,

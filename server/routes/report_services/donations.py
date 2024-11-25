@@ -85,7 +85,7 @@ def generate_donations_report(data):
             filtered_by['status'] = status
 
         # Generate report
-        current_date = datetime.datetime.now().strftime("%m-%d-%Y")
+        current_date = datetime.datetime.now().strftime("%Y%m%d%H%M")        
         if shelter:
             shelter_name = shelter.shelter_name.replace(" ", "_")
             report_name = f"{shelter_name}_Donations_Report_{current_date}"
@@ -118,6 +118,7 @@ def generate_donations_report(data):
             start_date=start_date,
             end_date=end_date,
             generated_by=user_id,
+            generated_at=datetime.datetime.now(),
             shelter_id=shelter_id,
             filtered_by=filtered_by,
             data=report_data,

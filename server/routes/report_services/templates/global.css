@@ -15,6 +15,10 @@ body {
     width: 65%;
 }
 
+.details {
+    width: 30%;
+}
+
 p {
     font-size: 14pt
 }
