@@ -102,8 +102,6 @@ def update_shelter_by_id(id):
             shelter.current_funding = data['current_funding']
         if 'funding_needs' in data:
             shelter.funding_needs = data['funding_needs']
-        if 'resource_needs' in data:
-            shelter.resource_needs = data['resource_needs']
 
         db.session.commit()
         return jsonify(shelter.serialize()), 200

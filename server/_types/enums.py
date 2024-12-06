@@ -25,6 +25,7 @@ class UnitType(Enum):
     BOTTLE = 'Bottle'
     CAN = 'Can'
     ITEM = 'Item'
+    MEAL = 'Meal'
 
 class DonationType(Enum):
     MONETARY = 'Monetary'

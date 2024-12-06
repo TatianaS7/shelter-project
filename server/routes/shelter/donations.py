@@ -48,14 +48,16 @@ def handle_donation(shelter_id, donation_id):
         if donation.status == DonationStatus.CANCELLED:
             return jsonify({'error': 'Donation has already been cancelled by user and cannot be acted on'}), 400
         
+        # If accepting donation, update shelter's resource needs
         if data['action'] == DonationStatus.ACCEPTED.value:
-            donation.status = DonationStatus.ACCEPTED
+            donation.status = DonationStatus.ACCEPTED                  
+            shelter.remaining_resource_needs(donation)
+
         elif data['action'] == DonationStatus.REJECTED.value:
             donation.status = DonationStatus.REJECTED
         else:
             return jsonify({'error': f'{data['action']} is an invalid action'}), 400
 
-        flag_modified(donation, 'status')
         db.session.commit()
         return jsonify(donation.serialize()), 200
     except Exception as e:

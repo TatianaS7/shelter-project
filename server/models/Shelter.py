@@ -1,6 +1,6 @@
 # Model for Shelters
 from connection import db
-from _types import UserType, ShelterStatus
+from _types import UserType, ShelterStatus, DonationType, DonationStatus
 
 class Shelter(db.Model):
     __tablename__ = 'shelter'
@@ -67,5 +67,26 @@ class Shelter(db.Model):
         return self.funding_needs - self.current_funding
     
     # Calculate remaining resource needs
-    def remaining_resource_needs(self):
-        return self.resource_needs
+    def remaining_resource_needs(self, donation):
+        remaining_resources = {resource.resource_type.value: resource.quantity for resource in self.resource_needs}
+        print(remaining_resources)
+
+        if donation.donation_type == DonationType.PHYSICAL and donation.status == DonationStatus.ACCEPTED:
+            for item in donation.donated_items:
+                resource_type = item.get('resource_type')
+                quantity = item.get('quantity')
+                if resource_type in remaining_resources:
+                    remaining_resources[resource_type] -= quantity
+                    print(remaining_resources[resource_type])
+                else:
+                    print(f"error: {resource_type} is not a valid resource type")
+        else:
+            print(f"error: {donation.donation_type} is not a physical donation or status: {donation.status} is not accepted")
+
+        # Update the resource quantity based on the donation
+        for resource in self.resource_needs:
+            resource.quantity = remaining_resources[resource.resource_type.value]
+        
+        db.session.commit()
+
+        return [resource.serialize() for resource in self.resource_needs]

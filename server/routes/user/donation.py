@@ -33,7 +33,7 @@ def create_donation(user_id):
                     return jsonify({'error': f'Unit {item['unit']} is not a valid unit type'}), 400
                 donated_items.append({
                     'resource_type': resource.resource_type.value,
-                    'unit': item['unit'].upper(),
+                    'unit': item['unit'],
                     'quantity': item['quantity']
                 })
             

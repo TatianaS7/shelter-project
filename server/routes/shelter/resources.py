@@ -31,18 +31,26 @@ def add_resource(shelter_id):
         if not shelter:
             return jsonify({'error': 'Shelter not found'}), 404
         
-        for resource in data['resources']:
-            resource = Resource(
-                quantity=resource['quantity'],
-                unit=UnitType(resource['unit'].upper()),
-                resource_type=ResourceNeed(resource['resource_type'].upper()),
-                shelter_id=shelter_id,
-                priority=resource['priority']
-            )
-            db.session.add(resource)
+        for resource_data in data['resources']:
+            # Check if resource already exists
+            existing_resource = Resource.query.filter_by(resource_type=ResourceNeed[resource_data['resource_type'].upper()], shelter_id=shelter_id).first()
+            if existing_resource:
+                existing_resource.quantity += resource_data['quantity']
+                existing_resource.priority = resource_data['priority']
+                flag_modified(existing_resource, 'quantity')
+                flag_modified(existing_resource, 'priority')
+            else:
+                new_resource = Resource(
+                    quantity=resource_data['quantity'],
+                    unit=UnitType[resource_data['unit'].upper()],
+                    resource_type=ResourceNeed[resource_data['resource_type'].upper()],
+                    shelter_id=shelter_id,
+                    priority=resource_data['priority']
+                )
+                db.session.add(new_resource)
         
         db.session.commit()
-        return jsonify(resource.serialize()), 201
+        return jsonify(new_resource.serialize()), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400
     
