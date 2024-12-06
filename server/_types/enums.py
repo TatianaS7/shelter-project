@@ -18,6 +18,14 @@ class ResourceNeed(Enum):
     MEDICINE = 'Medicine'
     OTHER = 'Other'
 
+class UnitType(Enum):
+    BAG = 'Bag'
+    PACKAGE = 'Package'
+    BOX = 'Box'
+    BOTTLE = 'Bottle'
+    CAN = 'Can'
+    ITEM = 'Item'
+
 class DonationType(Enum):
     MONETARY = 'Monetary'
     PHYSICAL = 'Physical'      

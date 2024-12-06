@@ -1,2 +1,2 @@
-from _types.enums import UserRole, UserType, ResourceNeed, DonationType, ShelterStatus, UserStatus, DonationStatus, ReportType
+from _types.enums import UserRole, UserType, ResourceNeed, DonationType, ShelterStatus, UserStatus, DonationStatus, ReportType, UnitType
 from _types.schemas import User, Shelter, Donation, Report, User_Donations_Report, Shelter_Donations_Report, Shelter_Summary_Report, Shelter_Resources_Report

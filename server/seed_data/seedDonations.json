@@ -9,7 +9,13 @@
     "user_id": 1,
     "shelter_id": 2,
     "donation_type": "PHYSICAL",
-    "donated_items": ["Clothing"],
+    "donated_items": [
+      {
+        "resource_type": "Clothing",
+        "unit": "BAG",
+        "quantity": 1
+      }
+    ],
     "note": "Women's jackets and pants",
     "status": "ACCEPTED"
   },
@@ -23,7 +29,13 @@
     "user_id": 5,
     "shelter_id": 2,
     "donation_type": "PHYSICAL",
-    "donated_items": ["Hygiene"],
+    "donated_items": [
+      {
+        "resource_type": "Hygiene",
+        "unit": "PACKAGE",
+        "quantity": 3
+      }
+    ],
     "note": "Tampons, Diapers, Wipes",
     "status": "ACCEPTED"
   }

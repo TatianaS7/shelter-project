@@ -8,7 +8,26 @@
         "current_occupancy": 29,
         "current_funding": 10500,
         "funding_needs": 30000,
-        "resource_needs": ["Clothing", "Hygiene", "Medicine" ],
+        "resource_needs": [
+            {
+                "quantity": 20,
+                "unit": "BAG",
+                "resource_type": "Clothing",
+                "priority": 2
+            },
+            {
+                "quantity": 40,
+                "unit": "PACKAGE",
+                "resource_type": "Hygiene",
+                "priority": 1
+            }, 
+            {
+                "quantity": 21,
+                "unit": "ITEM",
+                "resource_type": "Medicine",
+                "priority": 1
+            }
+        ],
         "donations": [],
         "user_info": {
             "first_name": "Melanie",
@@ -25,7 +44,26 @@
         "current_occupancy": 45,
         "current_funding": 15000,
         "funding_needs": 50000,
-        "resource_needs": ["Clothing", "Hygiene", "Medicine", "Other" ],
+        "resource_needs": [
+            {
+                "quantity": 30,
+                "unit": "BAG",
+                "resource_type": "Clothing",
+                "priority": 1
+            },
+            {
+                "quantity": 40,
+                "unit": "PACKAGE",
+                "resource_type": "Hygiene",
+                "priority": 1
+            }, 
+            {
+                "quantity": 15,
+                "unit": "ITEM",
+                "resource_type": "Other",
+                "priority": 2
+            }
+        ],
         "donations": [],
         "user_info": {
             "first_name": "Samantha",

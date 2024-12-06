@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm.attributes import flag_modified
 from connection import db
-from models import Donation, Shelter
-from _types import DonationType, DonationStatus, ResourceNeed, ShelterStatus
+from models import Donation, Shelter, Resource
+from _types import DonationType, DonationStatus, ResourceNeed, ShelterStatus, UnitType
 
 user_donations = Blueprint('user_donations', __name__)
 
@@ -21,7 +21,21 @@ def create_donation(user_id):
             return jsonify({'error': 'Shelter is inactive and cannot receive donations'}), 400
 
         donation_type = DonationType[data['donation_type'].upper()]
-        donated_items = [ResourceNeed[item.upper()].value for item in data['donated_items']] if data.get('donated_items', None) else None
+        
+        # Validate donated items
+        donated_items = []
+        if data.get('donated_items', None):
+            for item in data['donated_items']:
+                resource = Resource.query.filter_by(resource_type=ResourceNeed[item['resource_type'].upper()], shelter_id=data['shelter_id']).first()
+                if not resource:
+                    return jsonify({'error': f'{item["resource_type"]} is not a valid resource for this shelter'}), 400
+                if item['unit'].upper() not in UnitType.__members__:
+                    return jsonify({'error': f'Unit {item['unit']} is not a valid unit type'}), 400
+                donated_items.append({
+                    'resource_type': resource.resource_type.value,
+                    'unit': item['unit'].upper(),
+                    'quantity': item['quantity']
+                })
             
         donation = Donation(
             user_id=user_id,

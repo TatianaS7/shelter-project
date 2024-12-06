@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from _types import DonationType, UserRole, UserType, ResourceNeed, ShelterStatus, DonationStatus, ReportType
+from _types import DonationType, UserRole, UserType, ResourceNeed, ShelterStatus, DonationStatus, ReportType, UnitType
 
 
 class Shelter(Schema):
@@ -14,7 +14,7 @@ class Shelter(Schema):
     current_occupancy = fields.Int()
     current_funding = fields.Float()
     funding_needs = fields.Float()
-    resource_needs = fields.Dict(keys=fields.Str(), values=fields.Int(), default={})
+    resource_needs = fields.Dict(fields.Nested('Resource'))
     donations = fields.Dict(fields.Nested('Donation'))
     staff = fields.List(fields.Nested('User'))
 
@@ -40,6 +40,18 @@ class Donation(Schema):
     donation_amount = fields.Float()
     donated_items = fields.List(fields.Str(), allow_none=True)
     note = fields.Str(allow_none=True)
+    created_at = fields.DateTime()
+
+
+class Resource(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    quantity = fields.Int()
+    unit = fields.Enum(UnitType)
+    resource_type = fields.Enum(ResourceNeed)
+    shelter_id = fields.Int()
+    priority = fields.Int()
+    created_at = fields.DateTime()
 
 
 class Report(Schema):

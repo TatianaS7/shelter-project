@@ -1,7 +1,7 @@
-from models import User, Donation, Shelter
+from models import User, Donation, Shelter, Resource
 import json
 from connection import db
-from _types import UserRole, UserType, DonationType, ResourceNeed, ShelterStatus, DonationStatus
+from _types import UserRole, UserType, DonationType, ResourceNeed, ShelterStatus, DonationStatus, UnitType
 
 def seed_shelters():
     db.session.query(Shelter).delete()
@@ -26,6 +26,17 @@ def seed_shelters():
             db.session.add(admin_user)
             db.session.commit()
 
+            # Create resource needs
+            resource_needs = [
+                Resource(
+                    shelter_id=None,
+                    quantity=resource['quantity'],
+                    unit=UnitType[resource['unit'].upper()],
+                    resource_type=ResourceNeed[resource['resource_type'].upper()],
+                    priority=resource['priority']
+                ) for resource in shelter.pop('resource_needs', [])
+            ]
+
             # Create shelter and associate with admin user        
             new_shelter = Shelter(
                 status=ShelterStatus.ACTIVE,
@@ -37,14 +48,16 @@ def seed_shelters():
                 current_occupancy=shelter['current_occupancy'],
                 current_funding=shelter['current_funding'],
                 funding_needs=shelter['funding_needs'],
-                resource_needs=shelter['resource_needs'],
+                resource_needs=resource_needs,
                 user_info=admin_user
             )
             db.session.add(new_shelter)
             db.session.commit()
 
-            # Update shelter_id for admin user
+            # Update shelter_id for admin user and resource needs
             admin_user.shelter_id = new_shelter.id
+            for resource in resource_needs:
+                resource.shelter_id = new_shelter.id
             db.session.commit()
 
 

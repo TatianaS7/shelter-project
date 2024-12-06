@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from connection import db
-from models import Shelter, User
-from _types import UserRole, UserType, ShelterStatus
+from models import Shelter, User, Resource
+from _types import UserRole, UserType, ShelterStatus, ResourceNeed, UnitType
 
 shelters = Blueprint('shelters', __name__)
 
@@ -36,7 +36,6 @@ def register_shelter():
             current_occupancy=data['current_occupancy'],
             current_funding=data['current_funding'],
             funding_needs=data['funding_needs'],
-            resource_needs=data['resource_needs'],
             user_info=admin_user
         )
         db.session.add(shelter)
@@ -44,6 +43,18 @@ def register_shelter():
 
         # Update shelter_id for admin user
         admin_user.shelter_id = shelter.id
+        db.session.commit()
+
+        # Create resource needs for shelter
+        for resource in data['resource_needs']:
+            new_resource = Resource(
+                resource_type=ResourceNeed[resource['resource_type'].upper()],
+                quantity=resource['quantity'],
+                unit=UnitType[resource['unit'].upper()],
+                shelter_id=shelter.id,
+                priority=resource.get('priority', 1)
+            )
+            db.session.add(new_resource)
         db.session.commit()
 
         return jsonify(shelter.serialize()), 201

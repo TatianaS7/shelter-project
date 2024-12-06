@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm.attributes import flag_modified
 from connection import db
-from models import Shelter
-from _types import ResourceNeed
+from models import Shelter, Resource
+from _types import ResourceNeed, UnitType
 
 resources = Blueprint('resources', __name__)
 
@@ -15,7 +15,8 @@ def get_all_resources(shelter_id):
         if not shelter:
             return jsonify({'error': 'Shelter not found'}), 404
         
-        return jsonify(shelter.resource_needs), 200
+        resources = Resource.query.filter_by(shelter_id=shelter_id).all()
+        return jsonify([resource.serialize() for resource in resources]), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
     
@@ -30,19 +31,18 @@ def add_resource(shelter_id):
         if not shelter:
             return jsonify({'error': 'Shelter not found'}), 404
         
-        # Check if resource type is valid
         for resource in data['resources']:
-            if resource.upper() in [r.name for r in ResourceNeed]:
-                if resource in shelter.resource_needs:
-                    return jsonify({'error': f'{resource} already exists in the resource needs list'}), 400
-                else:
-                    print(resource)
-                    shelter.resource_needs.append(resource)
-                    flag_modified(shelter, 'resource_needs')
-            else:
-                return jsonify({'error': f'{resource} is not a valid resource type'}), 400
+            resource = Resource(
+                quantity=resource['quantity'],
+                unit=UnitType(resource['unit'].upper()),
+                resource_type=ResourceNeed(resource['resource_type'].upper()),
+                shelter_id=shelter_id,
+                priority=resource['priority']
+            )
+            db.session.add(resource)
+        
         db.session.commit()
-        return jsonify(shelter.resource_needs), 200
+        return jsonify(resource.serialize()), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400
     
@@ -57,16 +57,12 @@ def remove_resource(shelter_id):
         if not shelter:
             return jsonify({'error': 'Shelter not found'}), 404
         
-        # Check if resource type is valid
         for resource in data['resources']:
-            if resource.upper() in [r.name for r in ResourceNeed]:
-                if resource in shelter.resource_needs:
-                    shelter.resource_needs.remove(resource)
-                    flag_modified(shelter, 'resource_needs')
-                else:
-                    return jsonify({'error': f'{resource} does not exist in the resource needs list'}), 400
-            else:
-                return jsonify({'error': f'{resource} is not a valid resource type'}), 400
+            resource = Resource.query.filter_by(id=resource['id']).first()
+            if not resource:
+                return jsonify({'error': 'Resource not found'}), 404
+            db.session.delete(resource)
+
         db.session.commit()
         return jsonify(shelter.resource_needs), 200
     except Exception as e:

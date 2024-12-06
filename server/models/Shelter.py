@@ -15,7 +15,7 @@ class Shelter(db.Model):
     current_occupancy = db.Column(db.Integer, nullable=False)
     current_funding = db.Column(db.Float, nullable=False)
     funding_needs = db.Column(db.Float, nullable=False)
-    resource_needs = db.Column(db.JSON, default=[])
+    resource_needs = db.relationship('Resource', backref='shelter', lazy=True)
     donations = db.relationship('Donation', backref='shelter', lazy=True)
     staff = db.relationship('User', backref='shelter', lazy=True)
 
@@ -49,7 +49,7 @@ class Shelter(db.Model):
             'current_occupancy': self.current_occupancy,
             'current_funding': self.current_funding,
             'funding_needs': self.funding_needs,
-            'resource_needs': self.resource_needs,
+            'resource_needs': [resource.serialize() for resource in self.resource_needs],
             'donations': [donation.serialize() for donation in self.donations],
             'staff': [user.serialize() for user in self.staff if user.user_type == UserType.TEAM_MEMBER]
         }
