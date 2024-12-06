@@ -50,8 +50,12 @@ def handle_donation(shelter_id, donation_id):
         
         # If accepting donation, update shelter's resource needs
         if data['action'] == DonationStatus.ACCEPTED.value:
-            donation.status = DonationStatus.ACCEPTED                  
-            shelter.remaining_resource_needs(donation)
+            if donation.donation_type == DonationType.PHYSICAL:
+                donation.status = DonationStatus.ACCEPTED                  
+                shelter.remaining_resource_needs(donation)
+            elif donation.donation_type == DonationType.MONETARY:
+                donation.status = DonationStatus.ACCEPTED
+                shelter.remaining_funding_needs(donation)
 
         elif data['action'] == DonationStatus.REJECTED.value:
             donation.status = DonationStatus.REJECTED

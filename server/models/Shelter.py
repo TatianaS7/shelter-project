@@ -54,22 +54,29 @@ class Shelter(db.Model):
             'staff': [user.serialize() for user in self.staff if user.user_type == UserType.TEAM_MEMBER]
         }
                 
-    # Receive a donation
-    def receive_donation(self, donation):
-        self.donations.append(donation)
     
     # Calculate remaining capacity
     def remaining_capacity(self):
         return self.capacity - self.current_occupancy
     
     # Calculate remaining funding needs
-    def remaining_funding_needs(self):
-        return self.funding_needs - self.current_funding
+    def remaining_funding_needs(self, donation):
+        if donation.donation_type == DonationType.MONETARY and donation.status == DonationStatus.ACCEPTED:
+            self.current_funding += donation.donation_amount
+            self.funding_needs -= donation.donation_amount
+            db.session.commit()
+            # print(self.funding_needs)
+            # print(self.current_funding)
+        else:
+            print(f"error: {donation.donation_type} is not a monetary donation or status: {donation.status} is not accepted")
+
+        return self.funding_needs
+        
     
     # Calculate remaining resource needs
     def remaining_resource_needs(self, donation):
         remaining_resources = {resource.resource_type.value: resource.quantity for resource in self.resource_needs}
-        print(remaining_resources)
+        # print(remaining_resources)
 
         if donation.donation_type == DonationType.PHYSICAL and donation.status == DonationStatus.ACCEPTED:
             for item in donation.donated_items:
@@ -77,7 +84,7 @@ class Shelter(db.Model):
                 quantity = item.get('quantity')
                 if resource_type in remaining_resources:
                     remaining_resources[resource_type] -= quantity
-                    print(remaining_resources[resource_type])
+                    # print(remaining_resources[resource_type])
                 else:
                     print(f"error: {resource_type} is not a valid resource type")
         else:
