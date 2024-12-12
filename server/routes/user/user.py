@@ -50,7 +50,7 @@ def get_all_users():
 @users.route('/<int:id>', methods=['GET'])
 def get_user_by_id(id):
     try:
-        user = User.query.get(id)
+        user = db.session.get(User, id)
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
@@ -65,7 +65,7 @@ def update_user_by_id(id):
     try:
         data = request.get_json()
 
-        user = User.query.get(id)
+        user = db.session.get(User, id)
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
