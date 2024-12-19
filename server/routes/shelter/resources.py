@@ -8,7 +8,7 @@ resources = Blueprint('resources', __name__)
 
 
 # Get All Resource Needs
-@resources.route('<int:shelter_id>/resources/all', methods=['GET'])
+@resources.route('/<int:shelter_id>/resources/all', methods=['GET'])
 def get_all_resources(shelter_id):
     try:
         shelter = Shelter.query.filter_by(id=shelter_id).first()
@@ -22,7 +22,7 @@ def get_all_resources(shelter_id):
     
 
 # Add a Resource Need
-@resources.route('<int:shelter_id>/resources/add', methods=['PUT'])
+@resources.route('/<int:shelter_id>/resources/add', methods=['PUT'])
 def add_resource(shelter_id):
     try:
         data = request.get_json()
@@ -56,7 +56,7 @@ def add_resource(shelter_id):
     
 
 # Remove a Resource Need
-@resources.route('<int:shelter_id>/resources/remove', methods=['PUT'])
+@resources.route('/<int:shelter_id>/resources/remove', methods=['PUT'])
 def remove_resource(shelter_id):
     try:
         data = request.get_json()

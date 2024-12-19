@@ -8,7 +8,7 @@ donations = Blueprint('donations', __name__)
 
 
 # Get All Donations
-@donations.route('<int:shelter_id>/donations/all', methods=['GET'])
+@donations.route('/<int:shelter_id>/donations/all', methods=['GET'])
 def get_all_donations(shelter_id):
     try:
         shelter = Shelter.query.filter_by(id=shelter_id).first()
@@ -22,7 +22,7 @@ def get_all_donations(shelter_id):
 
 
 # Update Donation Status (Accept or Reject)
-@donations.route('<int:shelter_id>/donations/<int:donation_id>/update', methods=['PUT'])
+@donations.route('/<int:shelter_id>/donations/<int:donation_id>/update', methods=['PUT'])
 def handle_donation(shelter_id, donation_id):
     try:
         data = request.get_json()
@@ -70,7 +70,7 @@ def handle_donation(shelter_id, donation_id):
 
 
 # Filter Donations
-@donations.route('<int:shelter_id>/donations/filter', methods=['GET'])
+@donations.route('/<int:shelter_id>/donations/filter', methods=['GET'])
 def filter_donations(shelter_id):
     try:
         shelter = Shelter.query.filter_by(id=shelter_id).first()
