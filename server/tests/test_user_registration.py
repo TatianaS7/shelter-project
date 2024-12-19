@@ -1,9 +1,9 @@
 import pytest
-from flask import json, Flask
+from flask import Flask, json
 from models import User
 from _types import UserRole, UserType
 from connection import db
-from routes.user.user import users
+from routes.user import users
 
 
 # Create a fixture to set up the Flask app for testing
@@ -32,7 +32,6 @@ def init_db(app):
     yield db
     db.session.remove()
     db.drop_all()
-
 
 # Test 1: Register a User
 def test_register_user(client, init_db):
