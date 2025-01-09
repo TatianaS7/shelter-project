@@ -30,6 +30,9 @@ def register_shelter():
             status=ShelterStatus.ACTIVE,
             shelter_name=data['shelter_name'], 
             address=data['address'], 
+            city=data['city'],
+            state=data['state'],
+            zip_code=data['zip_code'],
             phone=data['phone'], 
             primary_email=data['primary_email'],
             capacity=data['capacity'],
@@ -90,6 +93,12 @@ def update_shelter_by_id(id):
             shelter.shelter_name = data['shelter_name']
         if 'address' in data:
             shelter.address = data['address']
+        if 'city' in data:
+            shelter.city = data['city']
+        if 'state' in data:
+            shelter.state = data['state']
+        if 'zip_code' in data:
+            shelter.zip_code = data['zip_code']
         if 'phone' in data:
             shelter.phone = data['phone']
         if 'primary_email' in data:

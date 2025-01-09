@@ -2,6 +2,9 @@
     {
         "shelter_name": "Strength and Hope Center",
         "address": "1234 Main St",
+        "city": "Roswell",
+        "state": "DE",
+        "zip_code": "02367",
         "phone": "123-456-7890",
         "primary_email": "admin@strengthandhope.org",
         "capacity": 50,
@@ -38,6 +41,9 @@
     {
         "shelter_name": "Elm Women and Children's Shelter",
         "address": "5678 Elm St",
+        "city": "West Elm",
+        "state": "FL",
+        "zip_code": "12345",
         "phone": "234-567-8901",
         "primary_email": "admin@elmwomenandchildren.org",
         "capacity": 75,

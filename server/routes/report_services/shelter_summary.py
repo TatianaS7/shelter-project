@@ -113,13 +113,12 @@ def download_shelter_summary_report(report, file_format):
         os.makedirs('reports', exist_ok=True)
         file_path = f"reports/{report.name}.{file_format}"
 
-        shelter = Shelter.query.get(report.shelter_id)
+        shelter_data = Shelter.query.get(report.shelter_id)
         user = User.query.get(report.generated_by)
-        shelter_name = shelter.shelter_name if shelter else None
 
         if file_format == 'pdf':
             template = env.get_template('shelter_summary.html')
-            html_content = template.render(report=report, shelter_name=shelter_name, generated_by=user)
+            html_content = template.render(report=report, shelter_data=shelter_data, generated_by=user)
             HTML(string=html_content, base_url='server/routes/report_services/templates').write_pdf(file_path)
         elif file_format == 'xlsx':
             df = pd.DataFrame(report.data['donations_summary']['donations_log'])

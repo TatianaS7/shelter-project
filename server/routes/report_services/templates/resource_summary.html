@@ -8,7 +8,9 @@
 <body>
     <div class="flex">
         <div class="header">
-            <h1>{{ shelter_name }}</h1>
+            <h1>{{ shelter_data.shelter_name }}</h1>
+            <p>{{ shelter_data.address }}</p>
+            <p>{{ shelter_data.city }}, {{ shelter_data.state }} {{ shelter_data.zip_code }}</p>
             <h3>{{ report.report_type.value }} Report</h3>
         </div>
 

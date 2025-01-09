@@ -9,6 +9,9 @@ class Shelter(db.Model):
     status = db.Column(db.Enum(ShelterStatus), nullable=False, default=ShelterStatus.ACTIVE)
     shelter_name = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(2), nullable=False)
+    zip_code = db.Column(db.String(5), nullable=False)
     phone = db.Column(db.String(100), nullable=False)
     primary_email = db.Column(db.String(100), nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
@@ -19,10 +22,13 @@ class Shelter(db.Model):
     donations = db.relationship('Donation', backref='shelter', lazy=True)
     staff = db.relationship('User', backref='shelter', lazy=True)
 
-    def __init__(self, status, shelter_name, address, phone, primary_email, capacity, current_occupancy, current_funding, funding_needs, resource_needs, user_info, donations=None, staff=None):
+    def __init__(self, status, shelter_name, address, city, state, zip_code, phone, primary_email, capacity, current_occupancy, current_funding, funding_needs, resource_needs, user_info, donations=None, staff=None):
         self.status = status
         self.shelter_name = shelter_name
         self.address = address
+        self.city = city
+        self.state = state
+        self.zip_code = zip_code
         self.phone = phone
         self.primary_email = primary_email
         self.capacity = capacity
@@ -43,6 +49,9 @@ class Shelter(db.Model):
             'status': self.status.value,
             'shelter_name': self.shelter_name,
             'address': self.address,
+            'city': self.city,
+            'state': self.state,
+            'zip_code': self.zip_code,
             'phone': self.phone,
             'primary_email': self.primary_email,
             'capacity': self.capacity,
@@ -80,8 +89,8 @@ class Shelter(db.Model):
 
         if donation.donation_type == DonationType.PHYSICAL and donation.status == DonationStatus.ACCEPTED:
             for item in donation.donated_items:
-                resource_type = item.get('resource_type')
-                quantity = item.get('quantity')
+                resource_type = item['resource_type']
+                quantity = item['quantity']
                 if resource_type in remaining_resources:
                     remaining_resources[resource_type] -= quantity
                     # print(remaining_resources[resource_type])
