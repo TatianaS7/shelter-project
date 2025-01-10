@@ -30,11 +30,11 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
-            tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+            title: 'Dashboard',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,          
           }}
         />
-                <Tabs.Screen
+        <Tabs.Screen
         name='browse'
         options={{
           title: 'Browse',
@@ -42,10 +42,10 @@ export default function TabLayout() {
         }}
         />
         <Tabs.Screen
-        name='dashboard'
+        name='profile'
         options={{
-          title: 'Dashboard',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person" color={color} />,
         }}
         />
       </Tabs>

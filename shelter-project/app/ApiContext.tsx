@@ -7,6 +7,8 @@ interface ApiContextType {
     error: string | null;
     allShelters: any[];
     fetchAllShelters: () => void;
+    currentUser: any[];
+    fetchUserData: () => void;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -19,6 +21,23 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [allShelters, setAllShelters] = useState<any[]>([])
+    const [currentUser, setCurrentUser] = useState<any[]>([])
+
+    // Fetch User Data Function
+    const fetchUserData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await axios.get(`${apiURL}/users/1`)
+            console.log(res.data)
+            setCurrentUser(res.data)
+        } catch (error) {
+            setError('Failed to fetch user data')
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     // Fetch All Shelters Function
     const fetchAllShelters = async () => {
@@ -38,13 +57,12 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
 
     useEffect(() => {
         fetchAllShelters();
+        fetchUserData();
     }, [])
 
 
-    // Other API functions
-
     return (
-        <ApiContext.Provider value={{ loading, error, allShelters, fetchAllShelters }}>
+        <ApiContext.Provider value={{ loading, error, allShelters, fetchAllShelters, currentUser, fetchUserData }}>
             {children}
         </ApiContext.Provider>
     )
