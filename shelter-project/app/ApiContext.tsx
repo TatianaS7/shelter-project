@@ -28,7 +28,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
         setLoading(true);
         setError(null);
         try {
-            const res = await axios.get(`${apiURL}/users/1`)
+            const res = await axios.get(`${apiURL}/users/2`)
             console.log(res.data)
             setCurrentUser(res.data)
         } catch (error) {

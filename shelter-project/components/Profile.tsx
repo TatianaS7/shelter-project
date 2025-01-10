@@ -19,16 +19,24 @@ export default function Profile() {
                     <Text style={styles.userEmail}>{currentUser.email}</Text>
 
                     <Text style={styles.userType}>{currentUser.user_type}</Text>
+                    {currentUser.user_role && (
+                        <Text style={styles.userRole}>{currentUser.user_role}</Text>
+                    )}
                 </View>
 
                 <View style={styles.optionsContainer}>
-                    <HeaderTitle>Settings</HeaderTitle>
+                    {currentUser.user_type === 'Donor' ? (
+                        <HeaderTitle>Settings</HeaderTitle>
+                    ) : (
+                        <HeaderTitle>General</HeaderTitle>
+                    )}
 
                         <Button  
                             title="Edit Profile"
                             titleStyle={{ 
                                 color: Colors.light.text,
                                 marginLeft: 10,
+                                fontWeight: 500,
                             }}
                             type="outline"
                             icon={<Icon name="edit" color={Colors.light.icon} />}
@@ -39,6 +47,7 @@ export default function Profile() {
                             titleStyle={{ 
                                 color: Colors.light.text,
                                 marginLeft: 10,
+                                fontWeight: 500,
                             }}
                             type="outline"
                             icon={<Icon name="lock" color={Colors.light.icon} />}
@@ -47,13 +56,14 @@ export default function Profile() {
 
                         <Divider />
 
-                        {currentUser.user_type === 'Donor' && (
+                        {currentUser.user_type === 'Donor' ? (
                             <>                    
                                 <Button
                                     title="Payment Methods"
                                     titleStyle={{ 
                                         color: Colors.light.text,
                                         marginLeft: 10,
+                                        fontWeight: 500,
                                     }}
                                     type="outline"
                                     icon={<Icon name="payment" color={Colors.light.icon} />}
@@ -65,6 +75,7 @@ export default function Profile() {
                                 titleStyle={{ 
                                     color: Colors.light.text,
                                     marginLeft: 10,
+                                    fontWeight: 500,
                                 }}
                                 type="outline"
                                 icon={<Icon name="bookmark" color={Colors.light.icon} />}
@@ -76,6 +87,7 @@ export default function Profile() {
                                     titleStyle={{ 
                                         color: Colors.light.text,
                                         marginLeft: 10,
+                                        fontWeight: 500,
                                     }}
                                     type="outline"
                                     icon={<Icon name="receipt" color={Colors.light.icon} />}
@@ -83,7 +95,34 @@ export default function Profile() {
                                 </Button>
         
                             </>
-                        )}
+                        ) : (
+                            <>
+                            <HeaderTitle>Shelter Settings</HeaderTitle>
+                            <Button
+                                title="Shelter Information"
+                                titleStyle={{ 
+                                    color: Colors.light.text,
+                                    marginLeft: 10,
+                                    fontWeight: 500,
+                                }}
+                                type="outline"
+                                icon={<Icon name="info" color={Colors.light.icon} />}
+                                buttonStyle={styles.button}>
+                            </Button>
+                            <Button
+                                title="Team Members"
+                                titleStyle={{ 
+                                    color: Colors.light.text,
+                                    marginLeft: 10,
+                                    fontWeight: 500,
+                                }}
+                                type="outline"
+                                icon={<Icon name="people" color={Colors.light.icon} />}
+                                buttonStyle={styles.button}>
+                            </Button>
+                            </>
+                            )
+                        }
                     <Divider />
 
                     <Button 
@@ -114,6 +153,11 @@ export default function Profile() {
             fontSize: 17,
             textAlign: 'center',
             fontWeight: 'bold',
+            color: 'white'
+        },
+        userRole: {
+            fontSize: 17,
+            textAlign: 'center',
             color: 'white'
         },
         userEmail: {
