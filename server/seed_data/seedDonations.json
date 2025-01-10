@@ -12,7 +12,7 @@
     "donated_items": [
       {
         "resource_type": "Clothing",
-        "unit": "BAG",
+        "unit": "Bag",
         "quantity": 1
       }
     ],
@@ -32,11 +32,29 @@
     "donated_items": [
       {
         "resource_type": "Hygiene",
-        "unit": "PACKAGE",
+        "unit": "Package",
         "quantity": 3
       }
     ],
     "note": "Tampons, Diapers, Wipes",
     "status": "ACCEPTED"
+  },
+  {
+    "user_id": 3,
+    "shelter_id": 1,
+    "donation_type": "MONETARY",
+    "donation_amount": 250
+  },
+  {
+    "user_id": 1,
+    "shelter_id": 1,
+    "donation_type": "PHYSICAL",
+    "donated_items": [
+      {
+        "resource_type": "Clothing",
+        "unit": "Bag",
+        "quantity": 1
+      }
+    ]
   }
 ]
