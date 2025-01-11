@@ -1,10 +1,10 @@
 import { View } from 'react-native';
-import Profile from '@/components/Profile';
+import Shelter from '@/components/Shelter';
 
 export default function ProfileScreen() {
     return (
         <View>
-            <Profile />
+            <Shelter />
         </View>
     )
 }

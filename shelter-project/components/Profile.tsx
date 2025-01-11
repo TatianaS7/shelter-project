@@ -14,7 +14,7 @@ export default function Profile() {
         // <ParallaxScrollView>
             <View style={styles.mainContainer}>
                 <View style={styles.detailsContainer}>
-                    <Icon name="person" color="white" size={95} />
+                    <Icon name="person" color="black" size={95} />
                     <HeaderTitle style={styles.userName}>{currentUser.first_name} {currentUser.last_name}</HeaderTitle>
                     <Text style={styles.userEmail}>{currentUser.email}</Text>
 
@@ -153,18 +153,19 @@ export default function Profile() {
             fontSize: 17,
             textAlign: 'center',
             fontWeight: 'bold',
-            color: 'white'
+            color: 'black'
         },
         userRole: {
             fontSize: 17,
             textAlign: 'center',
-            color: 'white'
+            color: 'black',
+            fontWeight: '600'
         },
         userEmail: {
             fontSize: 15,
             textAlign: 'center',
             fontWeight: 'light',
-            color: 'white',
+            color: 'black',
             marginBottom: 10,
         },
         detailsContainer: {

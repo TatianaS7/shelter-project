@@ -7,10 +7,12 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useApi } from '../ApiContext';
 
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { currentUser } = useApi();
 
   return (
       <Tabs
@@ -34,13 +36,25 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,          
           }}
         />
-        <Tabs.Screen
-        name='browse'
-        options={{
-          title: 'Browse',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
-        }}
-        />
+        {currentUser.user_type == "Donor" && (
+          <Tabs.Screen
+          name='browse'
+          options={{
+            title: 'Browse',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
+          }}
+          />
+        )}
+        
+        {currentUser.user_type == "Team Member" && (
+          <Tabs.Screen
+          name='shelter'
+          options={{
+            title: 'Shelter',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          }}
+          />
+        )}
         <Tabs.Screen
         name='profile'
         options={{
