@@ -6,6 +6,8 @@ import { Colors } from "../constants/Colors"
 import { HeaderTitle } from "@react-navigation/elements";
 import { Divider, Icon, Button } from "react-native-elements";
 import ParallaxScrollView from "./ParallaxScrollView";
+import { Buttons } from "@/constants/Buttons";
+import { Spacing } from "@/constants/Spacing";
  
 export default function Profile() {
         const { currentUser } = useApi()
@@ -24,7 +26,7 @@ export default function Profile() {
                     )}
                 </View>
 
-                <View style={styles.optionsContainer}>
+                <View style={{ ...Spacing.roundedContainer, backgroundColor: Colors.light.background }}>
                     {currentUser.user_type === 'Donor' ? (
                         <HeaderTitle>Settings</HeaderTitle>
                     ) : (
@@ -40,7 +42,7 @@ export default function Profile() {
                             }}
                             type="outline"
                             icon={<Icon name="edit" color={Colors.light.icon} />}
-                            buttonStyle={styles.button}>
+                            buttonStyle={Buttons.primaryOutline}>
                         </Button>
                         <Button 
                             title="Change Password"
@@ -51,7 +53,7 @@ export default function Profile() {
                             }}
                             type="outline"
                             icon={<Icon name="lock" color={Colors.light.icon} />}
-                            buttonStyle={styles.button}>
+                            buttonStyle={Buttons.primaryOutline}>
                         </Button>
 
                         <Divider />
@@ -67,7 +69,7 @@ export default function Profile() {
                                     }}
                                     type="outline"
                                     icon={<Icon name="payment" color={Colors.light.icon} />}
-                                    buttonStyle={styles.button}>    
+                                    buttonStyle={Buttons.primaryOutline}>    
                                 </Button>
 
                                 <Button 
@@ -79,7 +81,7 @@ export default function Profile() {
                                 }}
                                 type="outline"
                                 icon={<Icon name="bookmark" color={Colors.light.icon} />}
-                                buttonStyle={styles.button}>
+                                buttonStyle={Buttons.primaryOutline}>
                                 </Button>
 
                                 <Button
@@ -91,7 +93,7 @@ export default function Profile() {
                                     }}
                                     type="outline"
                                     icon={<Icon name="receipt" color={Colors.light.icon} />}
-                                    buttonStyle={styles.button}>
+                                    buttonStyle={Buttons.primaryOutline}>
                                 </Button>
         
                             </>
@@ -107,7 +109,7 @@ export default function Profile() {
                                 }}
                                 type="outline"
                                 icon={<Icon name="info" color={Colors.light.icon} />}
-                                buttonStyle={styles.button}>
+                                buttonStyle={Buttons.primaryOutline}>
                             </Button>
                             <Button
                                 title="Team Members"
@@ -118,7 +120,7 @@ export default function Profile() {
                                 }}
                                 type="outline"
                                 icon={<Icon name="people" color={Colors.light.icon} />}
-                                buttonStyle={styles.button}>
+                                buttonStyle={Buttons.primaryOutline}>
                             </Button>
                             </>
                             )
@@ -172,14 +174,6 @@ export default function Profile() {
             height: 'auto',
             padding: 15,
             backgroundColor: Colors.light.tint,
-        },
-        optionsContainer: {
-            height: '100%',
-            padding: 20,
-            gap: 15,
-            borderTopStartRadius: 25,
-            borderTopEndRadius: 25,
-            backgroundColor: Colors.light.background,
         },
         button: {
             display: 'flex',

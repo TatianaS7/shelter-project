@@ -3,7 +3,9 @@ import { StyleSheet, View, Text, ScrollView, RefreshControl } from 'react-native
 import { HeaderTitle } from '@react-navigation/elements';
 import { useApi } from '../app/ApiContext'
 import { Colors } from "@/constants/Colors";
+import { Fonts } from "@/constants/Fonts";
 import { Divider, Icon } from "react-native-elements";
+import { Spacing } from "@/constants/Spacing";
 
 export default function Dashboard() {
     const { currentUser, shelterData, fetchUserData, fetchShelterData } = useApi();
@@ -58,13 +60,13 @@ export default function Dashboard() {
     
     return (
         <ScrollView
-            contentContainerStyle={styles.mainContainer}
+            contentContainerStyle={Spacing.mainContainer}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
         >
             <View style={styles.headerContainer}>
-                <Text style={styles.greeting}>Overview</Text>
+                <Text style={Fonts.pageTitle}>Overview</Text>
                 <HeaderTitle style={{ fontSize: 17, fontWeight: '500' }}>{formattedDate}</HeaderTitle>
                 {/* Update time and date to reflect last refresh  */}
                 <Text style={{ fontWeight: '500', color: 'darkgrey'}}>Last Updated at {lastRefreshTime}</Text>
@@ -76,9 +78,9 @@ export default function Dashboard() {
                 <View style={styles.widgetRow}>
                     <View style={styles.containers}>
                         <HeaderTitle>Pending Donations</HeaderTitle>
-                        <Text style={styles.widgetText}>{pendingPhysicalDonations.length}</Text>
+                        <Text style={Fonts.lightWidgetText}>{pendingPhysicalDonations.length}</Text>
                         <Text>Physical</Text>
-                        <Text style={styles.widgetText}>{pendingMonetaryDonations.length}</Text>
+                        <Text style={Fonts.lightWidgetText}>{pendingMonetaryDonations.length}</Text>
                         <Text>Monetary</Text>
                     </View>
 
@@ -86,7 +88,7 @@ export default function Dashboard() {
                         <View style={styles.row}>
                             <HeaderTitle style={{ color: 'white' }}>Total Donations</HeaderTitle>
                         </View>
-                        <Text style={styles.darkWidgetText}>${totalDonations}</Text>
+                        <Text style={Fonts.darkWidgetText}>${totalDonations}</Text>
                         <Text style={{color: 'white'}}>{currentMonth.toLocaleString('default', { month: 'long' })}</Text>
                     </View>
 
@@ -95,8 +97,8 @@ export default function Dashboard() {
                 <View style={styles.widgetRow}>
                     <View style={styles.darkWidget}>
                         <HeaderTitle style={{ color: 'white' }}>Capacity</HeaderTitle>
-                        <Text style={styles.widgetText}> {shelterData.current_occupancy}</Text>
-                        <Text style={styles.widgetText}>/{shelterData.capacity}</Text>
+                        <Text style={Fonts.lightWidgetText}> {shelterData.current_occupancy}</Text>
+                        <Text style={Fonts.lightWidgetText}>/{shelterData.capacity}</Text>
                         <Text style={{ fontSize: 12, color: 'white', marginTop: 10 }}>Occupants</Text>
                     </View>
 
@@ -129,16 +131,16 @@ export default function Dashboard() {
                                     <Text style={{ fontWeight: 'bold', fontSize: 25 }}>{resource.quantity}</Text> 
                                     <Text style={{ fontWeight: '500', fontSize: 10 }}>{resource.unit}s</Text>
                                 </View>
-                                <Text style={styles.widgetText}>{resource.resource_type}</Text>
+                                <Text style={Fonts.lightWidgetText}>{resource.resource_type}</Text>
                             </View>
                         ))}
                     </View>
                     <View style={styles.darkWidget} >
                         <HeaderTitle style={{ color: 'white' }}>Finances</HeaderTitle>
                         <Text style={{ color: 'white' }}>Current Funding:</Text>
-                        <Text style={styles.widgetText}>${shelterData.current_funding.toLocaleString()}</Text>
+                        <Text style={Fonts.lightWidgetText}>${shelterData.current_funding.toLocaleString()}</Text>
                         <Text style={{ color: 'white' }}>Funding Needs:</Text>
-                        <Text style={styles.widgetText}>${shelterData.funding_needs.toLocaleString()}</Text>
+                        <Text style={Fonts.lightWidgetText}>${shelterData.funding_needs.toLocaleString()}</Text>
                     </View>
                 </View>
             </View>
@@ -147,16 +149,8 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        margin: 20,
-    },
     headerContainer: {
         marginBottom: 20,
-    },
-    greeting: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: Colors.light.text,
     },
     widgetContainer: {
         display: 'flex',
@@ -171,16 +165,6 @@ const styles = StyleSheet.create({
         gap: 15,
         width: '100%',
         justifyContent: 'space-between',
-    },
-    widgetText: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: Colors.light.icon,
-    },
-    darkWidgetText: {
-        fontSize: 35,
-        fontWeight: 'bold',
-        color: Colors.light.icon,
     },
     darkWidget: {
         backgroundColor: 'black',
