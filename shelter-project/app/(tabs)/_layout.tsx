@@ -33,10 +33,10 @@ export default function TabLayout() {
           name="index"
           options={{
             title: 'Dashboard',
-            tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,          
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="rectangle.3.offgrid.fill" color={color} />,          
           }}
         />
-        {currentUser.user_type == "Donor" && (
+        {/* {currentUser && currentUser.user_type == "Donor" && ( */}
           <Tabs.Screen
           name='browse'
           options={{
@@ -44,9 +44,9 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="magnifyingglass" color={color} />,
           }}
           />
-        )}
+        {/* )} */}
         
-        {currentUser.user_type == "Team Member" && (
+        {/* {currentUser && currentUser.user_type == "Team Member" && ( */}
           <Tabs.Screen
           name='shelter'
           options={{
@@ -54,7 +54,16 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
           }}
           />
-        )}
+        {/* )} */}
+
+        <Tabs.Screen
+        name='donations'
+        options={{
+          title: 'Donations',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="dollarsign.circle.fill" color={color} />,
+        }}
+        />
+
         <Tabs.Screen
         name='profile'
         options={{

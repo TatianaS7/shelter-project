@@ -9,7 +9,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 
 import Browse from '@/components/Browse';
 
-export default function Explore() {
+export default function BrowseScreen() {
     return (
         <View>
             <Browse />
