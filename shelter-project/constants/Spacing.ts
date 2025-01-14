@@ -19,17 +19,16 @@ export const Spacing = {
         borderTopEndRadius: 25,
     },
     searchBarContainer: {
-        height: 50,
+        height: 40,
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 10,
-        marginTop: 20,
-        marginBottom: 20,
+        margin: 10,
     },
     searchBarInputContainer: {
         height: '100%' as any,
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 0,
-    },
+    }
 }

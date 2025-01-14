@@ -33,6 +33,7 @@ interface Shelter {
 interface ApiContextType {
     loading: boolean;
     error: string | null;
+    formatDate: (dateString: string | number | Date) => string;
     allShelters: any[];
     fetchAllShelters: () => void;
     currentUser: User;
@@ -77,6 +78,12 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
         donations: [],
         staff: []
     });
+
+    // Format Date (MM/DD/YY)
+    const formatDate = (dateString: string | number | Date) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     // Fetch User Data Function
     const fetchUserData = async () => {
@@ -134,7 +141,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
 
 
     return (
-        <ApiContext.Provider value={{ loading, error, allShelters, fetchAllShelters, currentUser, fetchUserData, shelterData, fetchShelterData }}>
+        <ApiContext.Provider value={{ loading, error, formatDate, allShelters, fetchAllShelters, currentUser, fetchUserData, shelterData, fetchShelterData }}>
             {children}
         </ApiContext.Provider>
     )

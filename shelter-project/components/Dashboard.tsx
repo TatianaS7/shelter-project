@@ -8,14 +8,9 @@ import { Divider, Icon } from "react-native-elements";
 import { Spacing } from "@/constants/Spacing";
 
 export default function Dashboard() {
-    const { currentUser, shelterData, fetchUserData, fetchShelterData } = useApi();
+    const { currentUser, formatDate, shelterData, fetchUserData, fetchShelterData } = useApi();
     const [refreshing, setRefreshing] = useState(false);
     const [lastRefreshTime, setLastRefreshTime] = useState(new Date().toLocaleTimeString());
-
-    const formatDate = (dateString: string | number | Date) => {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
 
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
     const currentYear = new Date().getFullYear();

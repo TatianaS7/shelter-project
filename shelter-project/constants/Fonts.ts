@@ -15,5 +15,11 @@ export const Fonts = {
     fontSize: 30,
     fontWeight: 'bold' as 'bold',
     color: Colors.light.icon,
+  },
+  sectionTitle: {
+    fontSize: 25,
+    fontWeight: 'bold' as 'bold',
+    marginLeft: 20,
+    marginBottom: 15,
   }
 };
