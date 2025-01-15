@@ -12,7 +12,7 @@ export const Spacing = {
         borderRadius: 10,
     },
     roundedContainer: {
-        height: '100%',
+        height: '100%' as any,
         padding: 20,
         gap: 15,
         borderTopStartRadius: 25,
@@ -27,7 +27,7 @@ export const Spacing = {
     },
     searchBarInputContainer: {
         height: '100%' as any,
-        backgroundColor: 'white',
+        backgroundColor: 'white' as color,
         borderRadius: 10,
         padding: 0,
     }

@@ -13,17 +13,27 @@ import DonationCard from "./DonationCard";
 
 export default function Donations() {
   const { currentUser, shelterData } = useApi();
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [donationTypes, setDonationTypes] = useState([
-    { label: "Monetary", value: "monetary" },
-    { label: "Physical", value: "physical" },
-  ]);
+  // const [open, setOpen] = useState(false);
+  // const [value, setValue] = useState(null);
+  // const [donationTypes, setDonationTypes] = useState([
+  //   { label: "Monetary", value: "monetary" },
+  //   { label: "Physical", value: "physical" },
+  // ]);
+
+  const pendingDonations = shelterData.donations.filter(
+    (donation) => donation.status === "Pending"
+  );
+
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const toggleSearchBar = () => {
+    setSearchVisible(!searchVisible);
+  }
 
   return (
     <View>
       <View style={Spacing.mainContainer}>
-        <SearchBar
+        {/* <SearchBar
           placeholder="Search Donations..."
           platform="ios"
           onChangeText={() => {}}
@@ -36,19 +46,30 @@ export default function Donations() {
             size: 24,
             color: Colors.light.icon,
           }}
-        />
+        /> */}
 
         {currentUser.user_type === "Team Member" ? (
           <View style={styles.reviewDonationsContainer}>
             <HeaderTitle style={Spacing.widgetContainerText}>
               To Be Reviewed
             </HeaderTitle>
-            <Button
-              title="Review Donations"
-              buttonStyle={Buttons.primarySolid}
-              onPress={() => {}}
-              style={styles.reviewButton}
-            />
+            {pendingDonations.length > 0 ? (
+              <>
+              <View style={[styles.flex, {paddingLeft: 15, alignItems: "baseline", gap: 10}]}>
+                <HeaderTitle style={styles.pendingCount}>{pendingDonations.length.toString()}</HeaderTitle>
+                <Text style={{ color: 'white'}}>Pending</Text>
+              </View>
+              <Button
+                title="Manage"
+                titleStyle={Buttons.boldText}
+                buttonStyle={Buttons.primarySolid}
+                onPress={() => {}}
+                style={styles.reviewButton}
+              />
+            </>
+            ) : (
+              <Text style={Spacing.widgetContainerText}>No Donations To Review</Text>
+            )}
           </View>
         ) : (
           currentUser.user_type === "Donor" && (
@@ -68,11 +89,18 @@ export default function Donations() {
       <View
         style={[
           Spacing.roundedContainer,
-          { backgroundColor: Colors.light.icon },
+          { backgroundColor: Colors.light.icon,
+            height: '65%'
+           },
         ]}
       >
-        <View style={styles.flex}>
-            <HeaderTitle style={styles.donationsList}>Donations List</HeaderTitle>
+        <View style={[styles.flex, {justifyContent: "space-between"}]}>
+            <View>
+              <HeaderTitle style={styles.donationsList}>Donations List</HeaderTitle>
+              <Text style={{fontWeight: '500'}}>Count: {shelterData.donations.length}</Text>
+            </View>
+            
+            <View style={[styles.flex, {justifyContent: "space-between"}]}>
             <Button
                 icon={
                     <Icon
@@ -85,33 +113,38 @@ export default function Donations() {
                 buttonStyle={Buttons.primarySolid}
                 onPress={() => {}}
             />
-        </View>
-
-        {/* <View style={styles.filtersContainer}>
-          <View style={styles.filter}>
-            <HeaderTitle>Type</HeaderTitle>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={donationTypes}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setDonationTypes}
-            />
-          </View>
-
-          <View style={styles.filter}>
-            <HeaderTitle>Status</HeaderTitle>
-            <DropDownPicker
-                open={open}
-                value={value}
-                items={donationTypes}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setDonationTypes}
+            <Button
+              icon={
+                <Icon
+                  name="search"
+                  type="ionicon"
+                  size={20}
+                  color="white"
                 />
+              }
+              buttonStyle={Buttons.primarySolid}
+              onPress={toggleSearchBar}
+            />
             </View>
-        </View> */}
+        </View>
+        
+        {searchVisible && (
+        <SearchBar
+          placeholder="Search Donations..."
+          platform="ios"
+          onChangeText={setSearchQuery}
+          value={searchQuery}
+          containerStyle={Spacing.searchBarContainer}
+          inputContainerStyle={Spacing.searchBarInputContainer}
+          searchIcon={{
+            name: "search",
+            type: "ionicon",
+            size: 24,
+            color: Colors.light.icon,
+          }}
+        />
+        )}
+
 
         <DonationCard />
       </View>
@@ -126,6 +159,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 10,
+    boxShadow: "0px 6px 6px rgba(0, 0, 0, 0.25)",
+  },
+  pendingCount: {
+    color: "white",
+    fontSize: 45,
   },
   reviewButton: {
     width: "auto",
@@ -149,6 +187,5 @@ const styles = StyleSheet.create({
   flex: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
   }
 });

@@ -11,15 +11,19 @@ export const Buttons = {
     primarySolid: {
         display: 'flex' as 'flex',        
         backgroundColor: Colors.light.tint,
-        height: 'auto',
+        height: 'auto' as 'auto',
         justifyContent: 'flex-start' as 'flex-start',    
     },
     blackSolid: {
         display: 'flex' as 'flex',        
-        backgroundColor: 'black',
-        height: 'auto',
+        backgroundColor: 'black' as 'black',
+        height: 'auto' as 'auto',
         marginTop: 20,
         marginBottom: 20,
         borderRadius: 10,
+    },
+    boldText: {
+        fontWeight: '600' as '600',
+        fontSize: 16,
     },
 }
