@@ -108,7 +108,7 @@ export default function Dashboard() {
                                 {donation.donation_type === "Physical" ? (
                                     <Text style={{fontWeight: "bold", color: Colors.light.icon}}>+ {donation.donated_items[0].quantity} {donation.donated_items[0].unit}(s) {donation.donated_items[0].resource_type}</Text>
                                 ) : (
-                                    <Text style={{fontWeight: "bold", color: Colors.light.icon}}>+ ${donation.donation_amount.toFixed(2)}</Text>
+                                    <Text style={{fontWeight: "bold", color: Colors.light.icon}}>+ ${donation.donation_amount && donation.donation_amount.toFixed(2)}</Text>
                                 )}
                             </View>
                         ))}

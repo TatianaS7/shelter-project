@@ -2,46 +2,38 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { HeaderTitle } from "@react-navigation/elements";
 import { Divider, Icon, Button, SearchBar } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
-import DropDownPicker from "react-native-dropdown-picker";
 
 import { useApi } from "../app/ApiContext";
 import { Colors } from "@/constants/Colors";
 import { Buttons } from "@/constants/Buttons";
 import { Spacing } from "@/constants/Spacing";
-import { Fonts } from "@/constants/Fonts";
 import DonationCard from "./DonationCard";
-import { router } from "expo-router";
+import FilterModal from "./FilterModal";
 
 export default function Donations() {
-  const { currentUser, shelterData } = useApi();
-  const pendingDonations = shelterData.donations.filter(
-    (donation) => donation.status === "Pending"
-  );
-
+  const { currentUser, shelterData, pendingDonations, activeFilters, filteredDonations } = useApi();
+  const [openFilter, setOpenFilter] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const toggleSearchBar = () => {
     setSearchVisible(!searchVisible);
   }
 
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  }
+
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  }
+
+  const activeFiltersText = Object.values(activeFilters)
+  .filter(value => value)
+  .join(", ")
+
   return (
     <View>
       <View style={Spacing.mainContainer}>
-        {/* <SearchBar
-          placeholder="Search Donations..."
-          platform="ios"
-          onChangeText={() => {}}
-          value=""
-          containerStyle={Spacing.searchBarContainer}
-          inputContainerStyle={Spacing.searchBarInputContainer}
-          searchIcon={{
-            name: "search",
-            type: "ionicon",
-            size: 24,
-            color: Colors.light.icon,
-          }}
-        /> */}
 
         {currentUser.user_type === "Team Member" ? (
           <View style={styles.reviewDonationsContainer}>
@@ -56,23 +48,16 @@ export default function Donations() {
                 <Text style={{ color: 'white'}}>Pending</Text>
               </View>
               <Divider style={{ backgroundColor: "white", height: 1, margin: 10 }} />
-              <View>
+              <View style={{marginBottom: 15}}>
                 <HeaderTitle style={styles.pendingCount}>
                   {`$${pendingDonations
                     .filter((donation) => donation.donation_type === "Monetary")
                     .reduce((total, donation) => total + donation.donation_amount, 0)
                     .toFixed(2)}`}
                 </HeaderTitle>
-                <Text style={{ color: 'white'}}>Total</Text>
+                <Text style={{ color: 'white'}}>Total Amount</Text>
               </View>
               </View>
-              <Button
-                title="Review"
-                titleStyle={Buttons.boldText}
-                buttonStyle={Buttons.primarySolid}
-                onPress={() => router.push("/donations/manage-donations")}
-                style={styles.reviewButton}
-              />
             </>
             ) : (
               <Text style={Spacing.widgetContainerText}>No Donations To Review</Text>
@@ -89,8 +74,6 @@ export default function Donations() {
             </View>
           )
         )}
-
-        <View></View>
       </View>
 
       <View
@@ -104,8 +87,11 @@ export default function Donations() {
         <View style={[styles.flex, {justifyContent: "space-between"}]}>
             <View>
               <HeaderTitle style={styles.donationsList}>Donations Log</HeaderTitle>
-              <Text style={{fontWeight: '500'}}>Count: {shelterData.donations.length}</Text>
-            </View>
+              <Text style={{fontWeight: '500'}}>Result(s): {filteredDonations.length}</Text>
+              {(activeFilters.donation_type || activeFilters.status) && (
+                <Text style={{fontWeight: '500'}}>Filters: {activeFiltersText}</Text>
+              )}            
+              </View>
             
             <View style={[styles.flex, {justifyContent: "space-between"}]}>
             <Button
@@ -118,7 +104,7 @@ export default function Donations() {
                     />
                 }
                 buttonStyle={Buttons.primarySolid}
-                onPress={() => {}}
+                onPress={() => {setOpenFilter(true)}}
             />
             <Button
               icon={
@@ -134,6 +120,7 @@ export default function Donations() {
             />
             </View>
         </View>
+
         
         {searchVisible && (
         <SearchBar
@@ -152,7 +139,16 @@ export default function Donations() {
         />
         )}
 
-        <DonationCard />
+        {filteredDonations.length === 0 ? (
+          <Text style={styles.noDonationsError}>No Donations Found!</Text>
+        ) : (
+          <DonationCard />
+        )}
+
+        {openFilter && (
+          <FilterModal isOpen={openFilter} onClose={handleCloseFilter}/>
+        )}
+
       </View>
     </View>
   );
@@ -194,5 +190,11 @@ const styles = StyleSheet.create({
   flex: {
     display: "flex",
     flexDirection: "row",
+  },
+  noDonationsError: {
+    color: "white",
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 20,
   }
 });

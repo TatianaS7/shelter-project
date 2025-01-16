@@ -2,11 +2,15 @@
   "dependencies": {
     "@react-native-community/progress-view": "^1.5.0",
     "axios": "^1.7.9",
-    "eslint": "^9.16.0",
     "react-native-auth0": "^4.0.0",
     "react-native-elements": "^3.4.3"
   },
   "devDependencies": {
-    "@react-native-community/cli": "latest"
+    "@eslint/js": "^9.18.0",
+    "@react-native-community/cli": "latest",
+    "eslint": "^9.18.0",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^15.14.0",
+    "typescript-eslint": "^8.20.0"
   }
 }
