@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { HeaderTitle } from "@react-navigation/elements";
 import { Divider, Icon, Button, SearchBar } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { useApi } from "../app/ApiContext";
@@ -10,16 +11,10 @@ import { Buttons } from "@/constants/Buttons";
 import { Spacing } from "@/constants/Spacing";
 import { Fonts } from "@/constants/Fonts";
 import DonationCard from "./DonationCard";
+import { router } from "expo-router";
 
 export default function Donations() {
   const { currentUser, shelterData } = useApi();
-  // const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState(null);
-  // const [donationTypes, setDonationTypes] = useState([
-  //   { label: "Monetary", value: "monetary" },
-  //   { label: "Physical", value: "physical" },
-  // ]);
-
   const pendingDonations = shelterData.donations.filter(
     (donation) => donation.status === "Pending"
   );
@@ -51,19 +46,31 @@ export default function Donations() {
         {currentUser.user_type === "Team Member" ? (
           <View style={styles.reviewDonationsContainer}>
             <HeaderTitle style={Spacing.widgetContainerText}>
-              To Be Reviewed
+              Pending Donations
             </HeaderTitle>
             {pendingDonations.length > 0 ? (
               <>
-              <View style={[styles.flex, {paddingLeft: 15, alignItems: "baseline", gap: 10}]}>
+              <View style={[styles.flex, {margin: 15, justifyContent: "space-evenly"}]}>
+              <View>
                 <HeaderTitle style={styles.pendingCount}>{pendingDonations.length.toString()}</HeaderTitle>
                 <Text style={{ color: 'white'}}>Pending</Text>
               </View>
+              <Divider style={{ backgroundColor: "white", height: 1, margin: 10 }} />
+              <View>
+                <HeaderTitle style={styles.pendingCount}>
+                  {`$${pendingDonations
+                    .filter((donation) => donation.donation_type === "Monetary")
+                    .reduce((total, donation) => total + donation.donation_amount, 0)
+                    .toFixed(2)}`}
+                </HeaderTitle>
+                <Text style={{ color: 'white'}}>Total</Text>
+              </View>
+              </View>
               <Button
-                title="Manage"
+                title="Review"
                 titleStyle={Buttons.boldText}
                 buttonStyle={Buttons.primarySolid}
-                onPress={() => {}}
+                onPress={() => router.push("/donations/manage-donations")}
                 style={styles.reviewButton}
               />
             </>
@@ -96,7 +103,7 @@ export default function Donations() {
       >
         <View style={[styles.flex, {justifyContent: "space-between"}]}>
             <View>
-              <HeaderTitle style={styles.donationsList}>Donations List</HeaderTitle>
+              <HeaderTitle style={styles.donationsList}>Donations Log</HeaderTitle>
               <Text style={{fontWeight: '500'}}>Count: {shelterData.donations.length}</Text>
             </View>
             
@@ -145,7 +152,6 @@ export default function Donations() {
         />
         )}
 
-
         <DonationCard />
       </View>
     </View>
@@ -169,6 +175,7 @@ const styles = StyleSheet.create({
     width: "auto",
     alignSelf: "center",
     textAlign: "center",
+    marginTop: 10,
     marginBottom: 20,
   },
   donationsList: {
