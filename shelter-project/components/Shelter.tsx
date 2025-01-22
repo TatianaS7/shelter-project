@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import React from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
 
 import { useApi } from "../app/ApiContext";
 import { Colors } from "../constants/Colors";
 import { HeaderTitle } from "@react-navigation/elements";
 import { Divider, Icon, Button } from "react-native-elements";
-import ParallaxScrollView from "./ParallaxScrollView";
 import { Spacing } from "@/constants/Spacing";
-import { Fonts } from "@/constants/Fonts";
 import { Buttons } from "@/constants/Buttons";
 import { router } from "expo-router";
 
@@ -45,6 +43,7 @@ export default function Shelter() {
               type="outline"
               icon={<Icon name="people" color="white" />}
               buttonStyle={Buttons.primarySolid}
+              onPress={() => router.push("/shelter-pages/team-info")}
             ></Button>
           </View>
           <View style={styles.containers}>
