@@ -37,14 +37,14 @@ interface Shelter {
 }
 
 interface Filters {
-    status?: string;
-    donation_type?: string;
+  status?: string;
+  donation_type?: string;
 }
 
 interface Donation {
-    donation_type: string;
-    status: string;
-    [key: string]: any; 
+  donation_type: string;
+  status: string;
+  [key: string]: any;
 }
 
 interface ApiContextType {
@@ -60,8 +60,9 @@ interface ApiContextType {
   pendingDonations: never[];
   filterDonations: (donations: Donation[], filters: Filters) => Donation[];
   activeFilters: Filters;
-    setActiveFilters: (filters: Filters) => void;
-    filteredDonations: Donation[];
+  setActiveFilters: (filters: Filters) => void;
+  filteredDonations: Donation[];
+  updateShelterData: (data: Shelter) => void;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -163,6 +164,22 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     }
   };
 
+  // Update shelter information
+  const updateShelterData = async (data: Shelter) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.put(`${apiURL}/shelters/1/update`, data);
+      console.log(res.data);
+      setShelterData(res.data);
+    } catch (error) {
+      setError("Failed to update shelter data");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAllShelters();
     fetchUserData();
@@ -173,18 +190,20 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     (donation) => donation.status === "Pending"
   );
 
-
-const filterDonations = (donations: Donation[], filters: Filters): Donation[] => {
+  const filterDonations = (
+    donations: Donation[],
+    filters: Filters
+  ): Donation[] => {
     return donations.filter((donation) => {
-        const typeMatches = filters.donation_type
-            ? donation.donation_type === filters.donation_type
-            : true;
-        const statusMatches = filters.status
-            ? donation.status === filters.status
-            : true;
-        return typeMatches && statusMatches;
+      const typeMatches = filters.donation_type
+        ? donation.donation_type === filters.donation_type
+        : true;
+      const statusMatches = filters.status
+        ? donation.status === filters.status
+        : true;
+      return typeMatches && statusMatches;
     });
-};
+  };
 
   const filteredDonations = filterDonations(
     currentUser.user_type === "Donor"
@@ -192,7 +211,6 @@ const filterDonations = (donations: Donation[], filters: Filters): Donation[] =>
       : shelterData.donations,
     activeFilters
   );
-
 
   return (
     <ApiContext.Provider
@@ -211,6 +229,7 @@ const filterDonations = (donations: Donation[], filters: Filters): Donation[] =>
         activeFilters,
         setActiveFilters,
         filteredDonations,
+        updateShelterData,
       }}
     >
       {children}

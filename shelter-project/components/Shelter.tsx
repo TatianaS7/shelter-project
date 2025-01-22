@@ -9,6 +9,7 @@ import ParallaxScrollView from "./ParallaxScrollView";
 import { Spacing } from "@/constants/Spacing";
 import { Fonts } from "@/constants/Fonts";
 import { Buttons } from "@/constants/Buttons";
+import { router } from "expo-router";
 
 export default function Shelter() {
   const { shelterData } = useApi();
@@ -36,6 +37,7 @@ export default function Shelter() {
               titleStyle={{ ...Buttons.buttonText, fontWeight: "500" }}
               icon={<Icon name="info" color="white" />}
               buttonStyle={Buttons.primarySolid}
+              onPress={() => router.push("/shelter-pages/shelter-info")}
             ></Button>
             <Button
               title="Team Members"
