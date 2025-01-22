@@ -35,22 +35,14 @@ export default function Profile() {
 
                         <Button  
                             title="Edit Profile"
-                            titleStyle={{ 
-                                color: Colors.light.text,
-                                marginLeft: 10,
-                                fontWeight: 500,
-                            }}
+                            titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                             type="outline"
                             icon={<Icon name="edit" color={Colors.light.icon} />}
                             buttonStyle={Buttons.primaryOutline}>
                         </Button>
                         <Button 
                             title="Change Password"
-                            titleStyle={{ 
-                                color: Colors.light.text,
-                                marginLeft: 10,
-                                fontWeight: 500,
-                            }}
+                            titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                             type="outline"
                             icon={<Icon name="lock" color={Colors.light.icon} />}
                             buttonStyle={Buttons.primaryOutline}>
@@ -62,11 +54,7 @@ export default function Profile() {
                             <>                    
                                 <Button
                                     title="Payment Methods"
-                                    titleStyle={{ 
-                                        color: Colors.light.text,
-                                        marginLeft: 10,
-                                        fontWeight: 500,
-                                    }}
+                                    titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                                     type="outline"
                                     icon={<Icon name="payment" color={Colors.light.icon} />}
                                     buttonStyle={Buttons.primaryOutline}>    
@@ -74,11 +62,7 @@ export default function Profile() {
 
                                 <Button 
                                 title="Saved Shelters"
-                                titleStyle={{ 
-                                    color: Colors.light.text,
-                                    marginLeft: 10,
-                                    fontWeight: 500,
-                                }}
+                                titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                                 type="outline"
                                 icon={<Icon name="bookmark" color={Colors.light.icon} />}
                                 buttonStyle={Buttons.primaryOutline}>
@@ -86,11 +70,7 @@ export default function Profile() {
 
                                 <Button
                                     title="Tax Information"
-                                    titleStyle={{ 
-                                        color: Colors.light.text,
-                                        marginLeft: 10,
-                                        fontWeight: 500,
-                                    }}
+                                    titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                                     type="outline"
                                     icon={<Icon name="receipt" color={Colors.light.icon} />}
                                     buttonStyle={Buttons.primaryOutline}>
@@ -102,22 +82,14 @@ export default function Profile() {
                             <HeaderTitle>Shelter Settings</HeaderTitle>
                             <Button
                                 title="Shelter Information"
-                                titleStyle={{ 
-                                    color: Colors.light.text,
-                                    marginLeft: 10,
-                                    fontWeight: 500,
-                                }}
+                                titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                                 type="outline"
                                 icon={<Icon name="info" color={Colors.light.icon} />}
                                 buttonStyle={Buttons.primaryOutline}>
                             </Button>
                             <Button
                                 title="Team Members"
-                                titleStyle={{ 
-                                    color: Colors.light.text,
-                                    marginLeft: 10,
-                                    fontWeight: 500,
-                                }}
+                                titleStyle={{ ...Buttons.buttonText, fontWeight: '500' }}
                                 type="outline"
                                 icon={<Icon name="people" color={Colors.light.icon} />}
                                 buttonStyle={Buttons.primaryOutline}>
@@ -149,7 +121,7 @@ export default function Profile() {
             fontSize: 25,
             textAlign: 'center',
             fontWeight: 'bold',
-            color: 'white',
+            color: 'black',
         },
         userType: {
             fontSize: 17,
@@ -166,7 +138,7 @@ export default function Profile() {
         userEmail: {
             fontSize: 15,
             textAlign: 'center',
-            fontWeight: 'light',
+            fontWeight: '600',
             color: 'black',
             marginBottom: 10,
         },
@@ -181,7 +153,7 @@ export default function Profile() {
             borderWidth: 1,
             height: 50,
             justifyContent: 'flex-start',
-        }
+        },
     })
 
     

@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderWidth: 2,
         borderColor: 'black',
-        borderRadius: 5,
+        borderRadius: 10,
         minHeight: 120,
         width: 'auto',
         padding: 10,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     recentDonationsWidget: {
         borderWidth: 2,
         borderColor: 'black',
-        borderRadius: 5,
+        borderRadius: 10,
         minHeight: 120,
         padding: 10,
         backgroundColor: 'white',
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     containers: {
         borderWidth: 2,
         borderColor: 'black',
-        borderRadius: 5,
+        borderRadius: 10,
         minHeight: 120,
         width: 'auto',
         padding: 12,
