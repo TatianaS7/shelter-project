@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, ScrollView, RefreshControl } from 'react-native';
 import { HeaderTitle } from '@react-navigation/elements';
-import { useApi } from '../app/ApiContext'
+import { useApi } from '@/app/ApiContext'
 import { Colors } from "@/constants/Colors";
 import { Fonts } from "@/constants/Fonts";
 import { Divider, Icon } from "react-native-elements";
 import { Spacing } from "@/constants/Spacing";
+// import { useUtils } from "@/app/UtilsContext";
 
 export default function Dashboard() {
-    const { currentUser, formatDate, shelterData, fetchUserData, fetchShelterData } = useApi();
+    const { currentUser, shelterData, fetchUserData, fetchShelterData, formatDate } = useApi();
+    // const { formatDate } = useUtils();
     const [refreshing, setRefreshing] = useState(false);
     const [lastRefreshTime, setLastRefreshTime] = useState(new Date().toLocaleTimeString());
 

@@ -4,6 +4,7 @@ import { HeaderTitle } from "@react-navigation/elements";
 import { Divider, Icon, Button, SearchBar } from "react-native-elements";
 
 import { useApi } from "../app/ApiContext";
+// import { useUtils } from "@/app/UtilsContext";
 import { Colors } from "@/constants/Colors";
 import { Buttons } from "@/constants/Buttons";
 import { Spacing } from "@/constants/Spacing";
@@ -11,7 +12,7 @@ import DonationCard from "./DonationCard";
 import FilterModal from "./FilterModal";
 
 export default function Donations() {
-  const { currentUser, shelterData, pendingDonations, activeFilters, filteredDonations } = useApi();
+  const { currentUser, shelterData, pendingDonations, filteredDonations, activeFilters} = useApi();
   const [openFilter, setOpenFilter] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");

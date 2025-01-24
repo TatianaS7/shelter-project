@@ -18,6 +18,13 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     const [showAll, setShowAll] = useState(true);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+    const [statusOptions] = useState([
+      "Pending",
+      "Accepted",
+      "Rejected",
+      "Cancelled",
+    ]);
+  
 
   const handleSelectAll = () => {
     setShowAll(true);
@@ -100,42 +107,17 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
             <HeaderTitle style={styles.headerTitle}>
               Donation Status
             </HeaderTitle>
-            <View style={styles.radioButtonContainer}>
+            {statusOptions.map((status) => (
+              <View style={styles.radioButtonContainer} key={status}>
               <RadioButton
-                value="Pending"
-                status={statusFilter === "Pending" ? "checked" : "unchecked"}
-                onPress={() => handleSelectStatus("Pending")}
+                value={status}
+                status={statusFilter === status ? "checked" : "unchecked"}
+                onPress={() => handleSelectStatus(status)}
                 color={Colors.light.icon}
               />
-              <Text style={styles.filterText}>Pending</Text>
+              <Text style={styles.filterText}>{status}</Text>
             </View>
-            <View style={styles.radioButtonContainer}>
-              <RadioButton
-                value="Accepted"
-                status={statusFilter === "Accepted" ? "checked" : "unchecked"}
-                onPress={() => handleSelectStatus("Accepted")}
-                color={Colors.light.icon}
-              />
-              <Text style={styles.filterText}>Accepted</Text>
-            </View>
-            <View style={styles.radioButtonContainer}>
-              <RadioButton
-                value="Rejected"
-                status={statusFilter === "Rejected" ? "checked" : "unchecked"}
-                onPress={() => handleSelectStatus("Rejected")}
-                color={Colors.light.icon}
-              />
-              <Text style={styles.filterText}>Rejected</Text>
-            </View>
-            <View style={styles.radioButtonContainer}>
-              <RadioButton
-                value="Cancelled"
-                status={statusFilter === "Cancelled" ? "checked" : "unchecked"}
-                onPress={() => handleSelectStatus("Cancelled")}
-                color={Colors.light.icon}
-              />
-              <Text style={styles.filterText}>Cancelled</Text>
-            </View>
+            ))}
           </ScrollView>
 
           <View style={styles.flexRow}>
@@ -147,7 +129,7 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
               ]}
               onPress={handleApplyFilters}
             />
-            <Button title="Reset" onPress={handleSelectAll} buttonStyle={{backgroundColor: 'red', paddingLeft: 40, paddingRight: 40}}/>
+            <Button title="Reset" onPress={handleSelectAll} buttonStyle={[Buttons.primarySolid, {backgroundColor: 'red', paddingLeft: 40, paddingRight: 40}]}/>
           </View>
         </View>
       </View>

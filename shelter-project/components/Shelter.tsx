@@ -53,6 +53,7 @@ export default function Shelter() {
               titleStyle={{ ...Buttons.buttonText, fontWeight: "500" }}
               icon={<Icon name="article" color="white" />}
               buttonStyle={Buttons.primarySolid}
+              onPress={() => router.push("/shelter-pages/generate-report")}
               type="solid"
             />
             <Button
@@ -96,10 +97,6 @@ export default function Shelter() {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    backgroundColor: Colors.light.background,
-    // flex: 1,
-  },
   shelterDataContainer: {
     height: "auto",
     padding: 45,
