@@ -8,6 +8,9 @@ import React, {
 } from "react";
 import apiURL from "../api";
 import axios from "axios";
+import * as FileSystem from "expo-file-system";
+import * as WebBrowser from "expo-web-browser";
+
 
 interface User {
   first_name: string;
@@ -17,9 +20,11 @@ interface User {
   user_role: string;
   shelter_id: number;
   donations: any[];
+  id: number;
 }
 
 interface Shelter {
+  shelter_id: number;
   status: string;
   shelter_name: string;
   address: string;
@@ -32,9 +37,9 @@ interface Shelter {
   current_occupancy: number;
   current_funding: number;
   funding_needs: number;
-  resource_needs: never[];
-  donations: never[];
-  staff: never[];
+  resource_needs: any[];
+  donations: any[];
+  staff: any[];
 }
 
 interface Filters {
@@ -43,9 +48,29 @@ interface Filters {
 }
 
 interface Donation {
+  id: number;
+  shelter_id: number;
+  user_id: number;
   donation_type: string;
   status: string;
-  [key: string]: any;
+  donated_items: string[];
+  donation_amount: number;
+  note: string;
+  created_at: string;
+}
+
+interface Report {
+  id: number;
+  name: string;
+  report_type: string;
+  start_date: string;
+  end_date: string;
+  generated_by: number;
+  generated_at: string;
+  shelter_id: number;
+  filtered_by: object;
+  data: object;
+  file_path: string;
 }
 
 interface ApiContextType {
@@ -64,6 +89,10 @@ interface ApiContextType {
   setActiveFilters: (filters: Filters) => void;
   filteredDonations: Donation[];
   updateShelterData: (data: Shelter) => void;
+  generateReport: (data: object) => void;
+  generatedReport: Report;
+  downloadReport: (reportID: number, fileType: string) => void;
+  reportFilePath: string | null;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -84,6 +113,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     user_role: "",
     shelter_id: 0,
     donations: [],
+    id: 0,
   });
   const [shelterData, setShelterData] = useState<Shelter>({
     status: "",
@@ -101,11 +131,24 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     resource_needs: [],
     donations: [],
     staff: [],
+    shelter_id: 0,
   });
-  const [activeFilters, setActiveFilters] = useState<{
-    status?: string;
-    donation_type?: string;
-  }>({});
+  const [activeFilters, setActiveFilters] = useState<Filters>({ status: undefined, donation_type: undefined });
+
+  const [generatedReport, setGeneratedReport] = useState<Report>({
+    id: 0,
+    name: "",
+    report_type: "",
+    start_date: "",
+    end_date: "",
+    generated_by: 0,
+    generated_at: "",
+    shelter_id: 0,
+    filtered_by: {},
+    data: {},
+    file_path: ""
+  });
+  const [reportFilePath, setReportFilePath] = useState<string | null>(null);
 
   // Format Date (MM/DD/YY)
   const formatDate = (dateString: string | number | Date) => {
@@ -139,7 +182,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     setError(null);
     try {
       const res = await axios.get(`${apiURL}/shelters/all`);
-      console.log(res.data);
+      // console.log(res.data);
       setAllShelters(res.data);
     } catch (error) {
       setError("Failed to fetch shelters");
@@ -155,7 +198,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     setError(null);
     try {
       const res = await axios.get(`${apiURL}/shelters/1`);
-      console.log(res.data);
+      // console.log(res.data);
       setShelterData(res.data);
     } catch (error) {
       setError("Failed to fetch shelter data");
@@ -171,7 +214,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     setError(null);
     try {
       const res = await axios.put(`${apiURL}/shelters/1/update`, data);
-      console.log(res.data);
+      // console.log(res.data);
       setShelterData(res.data);
     } catch (error) {
       setError("Failed to update shelter data");
@@ -180,6 +223,71 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
       setLoading(false);
     }
   };
+
+  // Generate Report Function
+  const generateReport = async (data: object) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post(`${apiURL}/reports/generate-report`, data, {
+        responseType: "json",
+      });
+      console.log(res.data);
+      setGeneratedReport(res.data);
+    } catch (error) {
+      setError("Failed to generate report");
+      console.error(error);
+    } finally {
+      setLoading(false);
+  }
+}
+
+const downloadReport = async (reportID: number, fileType: string) => {
+  setLoading(true);
+  setError(null);
+  try {
+    // Set up the request body with report details
+    const body = {
+      report_type: generatedReport.report_type,
+      file_format: fileType,
+      user_id: currentUser.id,
+    };
+
+    // Make the POST request to download the report
+    const res = await axios.post(`${apiURL}/reports/download-report/${reportID}`, body, {
+      responseType: "json", // Ensure response is in JSON format
+    });
+    console.log(res.data);
+
+    // Extract the file_path from the response
+    const filePath = res.data;
+
+    if (!filePath) {
+      throw new Error("No file path returned from the server");
+    }
+
+    // Now we have the file path (URL), and we need to download the file itself
+    const localFileUri = FileSystem.documentDirectory + `report.${fileType}`;
+
+    // Download the file from the file path returned by the backend
+    const { uri } = await FileSystem.downloadAsync(filePath, localFileUri);
+
+    // Save the file path for local access
+    setReportFilePath(uri);
+
+    // If it's a PDF, we can open it directly
+    if (fileType === "pdf") {
+      await WebBrowser.openBrowserAsync(uri);
+    }
+
+  } catch (error) {
+    setError("Failed to download report: " + (error instanceof Error ? error.message : "Unknown error"));
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchAllShelters();
@@ -231,6 +339,10 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
         setActiveFilters,
         filteredDonations,
         updateShelterData,
+        generateReport,
+        generatedReport,
+        downloadReport,
+        reportFilePath,
       }}
     >
       {children}
