@@ -18,48 +18,27 @@ import { Buttons } from "@/constants/Buttons";
 export default function EditProfileScreen() {
   const { currentUser } = useApi();
 
-  // Set up state variables for each editable field
-  const [email, setEmail] = useState(currentUser.email);
-
-  // Manage status with a boolean for the switch (e.g., true for Active, false for Inactive)
-  const [isActive, setIsActive] = useState(shelterData.status === "Active");
-
-  const [currentOccupancy, setCurrentOccupancy] = useState(
-    shelterData.current_occupancy
-  );
-  const [capacity, setCapacity] = useState(shelterData.capacity);
-
-  // State to manage whether the fields are in edit mode or not
   const [isEditing, setIsEditing] = useState(false);
 
-  // Simulate an update function (e.g., sending data to an API)
+  // Set up state variables for each editable field
+  const [email, setEmail] = useState(currentUser.email);
+  const [firstName, setFirstName] = useState(currentUser.first_name);
+  const [lastName, setLastName] = useState(currentUser.last_name);
+
+  // Function to handle the edit button press
   const handleUpdate = () => {
-    setIsEditing(true); // Enable editing mode when the user clicks "Update Information"
+    setIsEditing(true);
   };
 
+
   const handleSaveChanges = () => {
-    // Create the updated shelter data object
-    const updatedShelterData = {
-      shelter_name: shelterName,
-      address,
-      city,
-      state,
-      zip_code: zipCode,
-      phone,
-      primary_email: email,
-      status: isActive ? "Active" : "Inactive",
-      current_occupancy: currentOccupancy, // Ensure this is parsed to an integer
-      capacity, // Ensure this is parsed to an integer
-      current_funding: shelterData.current_funding,
-      funding_needs: shelterData.funding_needs,
-      resource_needs: shelterData.resource_needs,
-      donations: shelterData.donations,
-      staff: shelterData.staff,
+    // Create the updated user data object
+    const updatedUserData = {
     };
 
-    // Call updateShelterData function with the updated data
-    console.log("Saving shelter data...", updatedShelterData);
-    updateShelterData(updatedShelterData);
+    // Call the updateUser function with the updated data
+    console.log("Saving user data:", updatedUserData);
+    // updateShelterData(updatedShelterData);
 
     // Exit editing mode after saving
     setIsEditing(false);
@@ -69,7 +48,7 @@ export default function EditProfileScreen() {
     <>
       <Stack.Screen
         options={{
-          title: "Shelter Information",
+          title: "User Information",
           headerRight: () => (
             <Icon
               name="edit"
@@ -86,115 +65,31 @@ export default function EditProfileScreen() {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View>
-              {/* Shelter Name */}
-              <Text style={styles.label}>Shelter Name</Text>
+              <Text style={styles.label}>First Name</Text>
               <TextInput
                 style={styles.input}
-                value={shelterName}
-                onChangeText={setShelterName}
-                placeholder="Shelter Name"
+                value={firstName}
+                onChangeText={setFirstName}
                 editable={isEditing}
               />
 
-              {/* Address Fields in a Row (Address, City, State, Zip Code) */}
-              <Text style={styles.label}>Address</Text>
+              <Text style={styles.label}>Last Name</Text>
               <TextInput
                 style={styles.input}
-                value={address}
-                onChangeText={setAddress}
-                placeholder="Address"
-                editable={isEditing}
-              />
-              <Text style={styles.label}>City</Text>
-              <TextInput
-                style={styles.input}
-                value={city}
-                onChangeText={setCity}
-                placeholder="City"
-                editable={isEditing}
-              />
-              <View style={styles.addressRow}>
-                <Text style={styles.label}>State</Text>
-                <Text style={styles.label}>ZIP Code</Text>
-                </View>
-              <View style={styles.addressRow}>
-                <TextInput
-                  style={styles.addressInput}
-                  value={state}
-                  onChangeText={setState}
-                  placeholder="State"
-                  editable={isEditing}
-                />
-                <TextInput
-                  style={styles.addressInput}
-                  value={zipCode}
-                  onChangeText={setZipCode}
-                  placeholder="Zip Code"
-                  editable={isEditing}
-                  keyboardType="numeric"
-                />
-              </View>
-
-              {/* Phone */}
-              <Text style={styles.label}>Phone Number</Text>
-              <TextInput
-                style={styles.input}
-                value={phone}
-                onChangeText={setPhone}
-                placeholder="Phone"
+                value={lastName}
+                onChangeText={setLastName}
                 editable={isEditing}
               />
 
-              {/* Email */}
               <Text style={styles.label}>Email</Text>
               <TextInput
                 style={styles.input}
                 value={email}
                 onChangeText={setEmail}
-                placeholder="Email"
                 editable={isEditing}
               />
 
-              {/* Status (Active/Inactive) */}
-              <Text style={styles.label}>Status</Text>
-              <View style={styles.switchContainer}>
-                <Text>{isActive ? "Active" : "Inactive"}</Text>
-                <Switch
-                  value={isActive}
-                  onValueChange={setIsActive}
-                  disabled={!isEditing} // Disable switch when not in editing mode
-                  trackColor={{true: Colors.light.tint }} // Set track colors
-                />
               </View>
-
-              <View style={styles.flexRow}>
-                {/* Current Occupancy */}
-                <Text style={styles.label}>Current Occupancy</Text>
-                <Text style={styles.label}>Capacity</Text>
-              </View>
-              <View style={styles.flexRow}>
-                <TextInput
-                  style={styles.numberInput}
-                  value={currentOccupancy.toString()}
-                  onChangeText={(text) =>
-                    setCurrentOccupancy(parseInt(text) || 0)
-                  }
-                  placeholder="Current Occupancy"
-                  keyboardType="numeric"
-                  editable={isEditing}
-                />
-
-                {/* Capacity */}
-                <TextInput
-                  style={styles.numberInput}
-                  value={capacity.toString()}
-                  onChangeText={(text) => setCapacity(parseInt(text) || 0)}
-                  placeholder="Capacity"
-                  keyboardType="numeric"
-                  editable={isEditing}
-                />
-              </View>
-            </View>
           </TouchableWithoutFeedback>
         </ScrollView>
 
@@ -234,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   input: {
-    height: 40,
+    height: 50,
     borderColor: Colors.light.tint,
     borderWidth: 1,
     marginBottom: 15,
@@ -253,26 +148,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     marginBottom: 15,
-  },
-  addressInput: {
-    width: "45%",
-    height: 40,
-    borderColor: Colors.light.tint,
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 8,
-    borderRadius: 10,
-    fontSize: 18,
-},
-numberInput: {
-    width: "45%",
-    height: 40,
-    borderColor: Colors.light.tint,
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 8,
-    borderRadius: 10,
-    fontSize: 18,
   },
   icon: {
     marginRight: 10,
