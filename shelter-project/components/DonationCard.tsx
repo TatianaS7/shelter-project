@@ -1,17 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { HeaderTitle } from "@react-navigation/elements";
-import { Divider } from "react-native-elements";
+import { Divider, Button } from "react-native-elements";
 
 import { Colors } from "@/constants/Colors";
 // import { useUtils } from "@/app/UtilsContext";
 import { useApi } from "@/app/ApiContext";
+import { router } from "expo-router";
+import ManageDonations from "@/app/donation-pages/manage-donations";
 
 export default function DonationCard() {
   const {
     formatDate,
-    filteredDonations
+    filteredDonations,
+    setCurrentDonationID,
+    currentDonationID,
+    fetchDonationData,
+    currentDonationData,
+    loading
   } = useApi();
+
+  const [openModal, setOpenModal] = useState(false);
 
   const getStatusBackgroundColor = (status: string) => {
     switch (status) {
@@ -26,6 +35,19 @@ export default function DonationCard() {
     }
   };
 
+  const handleDonationPress = async (donationID: number) => {
+    setCurrentDonationID(donationID);
+    setOpenModal(true);
+    console.log("Donation ID:", donationID);
+
+    await fetchDonationData();
+
+    if (currentDonationData) {
+      router.push("/donation-pages/manage-donations");
+    } else {
+      alert("Donation data not found");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -63,6 +85,16 @@ export default function DonationCard() {
               >
                 {donation.status}
               </Text>
+              <Button
+                type="clear"
+                icon={{
+                  name: "chevron-right",
+                  type: "font-awesome",
+                  size: 15,
+                  color: "black",
+                }}
+                onPress={() => handleDonationPress(donation.id)}
+              />
             </View>
           </View>
         ))}

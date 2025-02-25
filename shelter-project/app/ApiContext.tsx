@@ -93,6 +93,10 @@ interface ApiContextType {
   generatedReport: Report;
   downloadReport: (reportID: number, fileType: string) => void;
   reportFilePath: string | null;
+  fetchDonationData: () => void;
+  currentDonationID: number | null;
+  setCurrentDonationID: (id: number | null) => void;
+  currentDonationData: Donation | null;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -149,6 +153,8 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     file_path: ""
   });
   const [reportFilePath, setReportFilePath] = useState<string | null>(null);
+  const [currentDonationID, setCurrentDonationID] = useState<number | null>(null);
+  const [currentDonationData, setCurrentDonationData] = useState<Donation | null>(null);
 
   // Format Date (MM/DD/YY)
   const formatDate = (dateString: string | number | Date) => {
@@ -321,6 +327,18 @@ const downloadReport = async (reportID: number, fileType: string) => {
     activeFilters
   );
 
+      // Get donation data
+      const fetchDonationData = async () => {
+          try {
+              const res = await axios.get(`${apiURL}/users/${currentUser.id}/donations/${currentDonationID}`);
+              console.log(res.data);
+              setCurrentDonationData(res.data);
+          } catch (error) {
+              console.error("Failed to fetch donation data:", error);
+          }
+      }
+  
+
   return (
     <ApiContext.Provider
       value={{
@@ -343,6 +361,10 @@ const downloadReport = async (reportID: number, fileType: string) => {
         generatedReport,
         downloadReport,
         reportFilePath,
+        fetchDonationData,
+        currentDonationID,
+        setCurrentDonationID,
+        currentDonationData,
       }}
     >
       {children}
