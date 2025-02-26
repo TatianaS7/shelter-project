@@ -1,24 +1,34 @@
 # shelter-project
+
 This application is designed to help homeless shelters manage their operations more efficiently. It provides features such as donation processing, funding tracking, staff management, report generation, and more.
 
 ## Tech Stack
+
 [![My Skills](https://skillicons.dev/icons?i=react,ts,python,flask)](https://skillicons.dev)
 
 ##
-### Dashboard
-![dashboard](./shelter-project/assets/screenshots/dashboard.png)
+![flow-map](./shelter-project/assets/screenshots/flow%20map.png)
+
+<!-- ### Dashboard
+
+<img src="./shelter-project/assets/screenshots/dashboard.png" alt="dashboard" width="300" />
 
 ### Browse
-![browse](./shelter-project/assets/screenshots/browse.png)
+
+<img src="./shelter-project/assets/screenshots/browse.png" alt="browse" width="300" />
 
 ### Shelter Home
-![shelter-home](./shelter-project/assets/screenshots/shelter-home.png)
+
+<img src="./shelter-project/assets/screenshots/shelter-home.png" alt="shelter-home" width="300" />
 
 ### Donations
-![donations](./shelter-project/assets/screenshots/donations.png)
+
+<img src="./shelter-project/assets/screenshots/donations.png" alt="donations" width="300" />
 
 ### Filter Donations
-![filter-donations](./shelter-project/assets/screenshots/filter-donations.png)
+
+<img src="./shelter-project/assets/screenshots/filter-donations.png" alt="filter-donations" width="300" />
 
 ### Profile
-![profile](./shelter-project/assets/screenshots/profile.png)
+
+<img src="./shelter-project/assets/screenshots/profile.png" alt="profile" width="300" /> -->
