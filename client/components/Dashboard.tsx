@@ -57,7 +57,7 @@ export default function Dashboard() {
     
     return (
         <ScrollView
-            contentContainerStyle={Spacing.mainContainer}
+            contentContainerStyle={[Spacing.mainContainer, styles.dashContainer]}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -66,7 +66,7 @@ export default function Dashboard() {
                 <Text style={Fonts.pageTitle}>Overview</Text>
                 <HeaderTitle style={{ fontSize: 17, fontWeight: '500' }}>{formattedDate}</HeaderTitle>
                 {/* Update time and date to reflect last refresh  */}
-                <Text style={{ fontWeight: '500', color: 'darkgrey'}}>Last Updated at {lastRefreshTime}</Text>
+                <Text style={Fonts.mutedText}>Last Updated at {lastRefreshTime}</Text>
             </View>
             
             <Divider />
@@ -146,6 +146,10 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
+    dashContainer: {
+        backgroundColor: "white",
+        flex: 1,
+    },
     headerContainer: {
         marginBottom: 20,
     },

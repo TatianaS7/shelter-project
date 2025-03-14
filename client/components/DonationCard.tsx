@@ -1,56 +1,45 @@
-import React, {useState} from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import React, {useEffect, useState} from "react";
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { HeaderTitle } from "@react-navigation/elements";
 import { Divider, Button } from "react-native-elements";
-
 import { Colors } from "@/constants/Colors";
 // import { useUtils } from "@/app/UtilsContext";
 import { useApi } from "@/app/ApiContext";
 import { router } from "expo-router";
-import ManageDonations from "@/app/donation-pages/manage-donations";
+import { Buttons } from "@/constants/Buttons";
 
 export default function DonationCard() {
   const {
     formatDate,
     filteredDonations,
     setCurrentDonationID,
-    currentDonationID,
     fetchDonationData,
     currentDonationData,
-    loading
+    getStatusBackgroundColor,
+    loading,
+    setLoading
   } = useApi();
 
-  const [openModal, setOpenModal] = useState(false);
 
-  const getStatusBackgroundColor = (status: string) => {
-    switch (status) {
-      case "Pending":
-        return "lightgrey";
-      case "Accepted":
-        return "lightgreen";
-      case "Rejected":
-        return "red";
-      case "Cancelled":
-        return "red";
+  useEffect(() => {
+    if (currentDonationData) {
+      setLoading(false);
+      router.push("/donation-pages/manage-donations");
     }
-  };
+  }, [currentDonationData, setLoading]);
+
 
   const handleDonationPress = async (donationID: number) => {
+    setLoading(true);
     setCurrentDonationID(donationID);
-    setOpenModal(true);
     console.log("Donation ID:", donationID);
 
-    await fetchDonationData();
-
-    if (currentDonationData) {
-      router.push("/donation-pages/manage-donations");
-    } else {
-      alert("Donation data not found");
-    }
+    await fetchDonationData(donationID);
   };
 
   return (
     <View style={styles.container}>
+      {loading && <ActivityIndicator size="large" color="white" />}
       <View style={styles.flex}>
         <HeaderTitle>Date</HeaderTitle>
         <HeaderTitle>Item</HeaderTitle>
@@ -77,7 +66,7 @@ export default function DonationCard() {
               </Text>
               <Text
                 style={[
-                  styles.donationStatus,
+                  Buttons.donationStatus,
                   {
                     backgroundColor: getStatusBackgroundColor(donation.status),
                   },

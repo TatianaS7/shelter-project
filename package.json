@@ -1,7 +1,7 @@
 {
   "scripts": {
     "server": "python3 server/app.py",
-    "client": "cd client && npx expo start",
+    "client": "cd client && npx expo start --ios",
     "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {

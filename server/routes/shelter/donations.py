@@ -7,6 +7,23 @@ from _types import DonationType, DonationStatus, UserRole
 donations = Blueprint('donations', __name__)
 
 
+# Get a Shelter's Donation
+@donations.route('/<int:shelter_id>/donations/<int:donation_id>', methods=['GET'])
+def get_donation(shelter_id, donation_id):
+    try:
+        shelter = Shelter.query.filter_by(id=shelter_id).first()
+        if not shelter:
+            return jsonify({'error': 'Shelter not found'}), 404
+        
+        donation = Donation.query.filter_by(id=donation_id, shelter_id=shelter_id).first()
+        if not donation:
+            return jsonify({'error': 'Donation not found'}), 404
+        
+        return jsonify(donation.serialize()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+    
+
 # Get All Donations
 @donations.route('/<int:shelter_id>/donations/all', methods=['GET'])
 def get_all_donations(shelter_id):

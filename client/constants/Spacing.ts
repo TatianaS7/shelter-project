@@ -2,7 +2,7 @@ import { color } from "react-native-elements/dist/helpers";
 
 export const Spacing = {
     mainContainer: {
-        margin: 20
+        padding: 20
     },
     widgetContainerText: {
         padding: 15,

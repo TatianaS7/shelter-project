@@ -158,7 +158,7 @@ export default function Donations() {
 const styles = StyleSheet.create({
   reviewDonationsContainer: {
     backgroundColor: "black",
-    height: "auto",
+    height: 170,
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 10,

@@ -1,3 +1,4 @@
+import { color } from 'react-native-elements/dist/helpers';
 import { Colors } from './Colors';
 
 export const Buttons = {
@@ -41,5 +42,18 @@ export const Buttons = {
         color: Colors.light.text,
         marginLeft: 10,
         fontWeight: 500,
-    }
+    },
+    warningSolid: {
+        color: "red" as const,
+        borderColor: "red" as const,
+    },
+    successSolid: {
+        color: "green" as const,
+        borderColor: "green" as const,
+    },
+    donationStatus: {
+        fontWeight: "bold" as const,
+        padding: 4,
+        borderRadius: 5,
+      },
 }

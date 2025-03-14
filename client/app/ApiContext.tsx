@@ -11,7 +11,6 @@ import axios from "axios";
 import * as FileSystem from "expo-file-system";
 import * as WebBrowser from "expo-web-browser";
 
-
 interface User {
   first_name: string;
   last_name: string;
@@ -24,7 +23,7 @@ interface User {
 }
 
 interface Shelter {
-  shelter_id: number;
+  id: number;
   status: string;
   shelter_name: string;
   address: string;
@@ -53,7 +52,7 @@ interface Donation {
   user_id: number;
   donation_type: string;
   status: string;
-  donated_items: string[];
+  donated_items: any[];
   donation_amount: number;
   note: string;
   created_at: string;
@@ -75,6 +74,7 @@ interface Report {
 
 interface ApiContextType {
   loading: boolean;
+  setLoading: (loading: boolean) => void;
   error: string | null;
   formatDate: (dateString: string | number | Date) => string;
   allShelters: any[];
@@ -93,10 +93,13 @@ interface ApiContextType {
   generatedReport: Report;
   downloadReport: (reportID: number, fileType: string) => void;
   reportFilePath: string | null;
-  fetchDonationData: () => void;
+  fetchDonationData: (donationID: number) => void;
   currentDonationID: number | null;
   setCurrentDonationID: (id: number | null) => void;
   currentDonationData: Donation | null;
+  setCurrentDonationData: (data: Donation | null) => void;
+  getStatusBackgroundColor: (status: string) => string | undefined;
+  updateDonationStatus: (status: string, donationID: number) => void;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -135,7 +138,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     resource_needs: [],
     donations: [],
     staff: [],
-    shelter_id: 0,
+    id: 0,
   });
   const [activeFilters, setActiveFilters] = useState<Filters>({ status: undefined, donation_type: undefined });
 
@@ -174,6 +177,11 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
       const res = await axios.get(`${apiURL}/users/2`);
       console.log(res.data);
       setCurrentUser(res.data);
+      if (res.data.user_type === "Team Member") {
+        const shelterRes = await axios.get(`${apiURL}/shelters/${res.data.shelter_id}`);
+        console.log(shelterRes.data);
+        setShelterData(shelterRes.data);
+      }
     } catch (error) {
       setError("Failed to fetch user data");
       console.error(error);
@@ -328,21 +336,76 @@ const downloadReport = async (reportID: number, fileType: string) => {
   );
 
       // Get donation data
-      const fetchDonationData = async () => {
+      const fetchDonationData = async (donationID: number) => {
           try {
-              const res = await axios.get(`${apiURL}/users/${currentUser.id}/donations/${currentDonationID}`);
+            if (currentUser.user_type == "Donor") {
+              const res = await axios.get(`${apiURL}/users/${currentUser.id}/donations/${donationID}`);
+              console.log("User ID:", currentUser.id);
+              console.log("Donation ID:", donationID);
               console.log(res.data);
               setCurrentDonationData(res.data);
+            } else if (currentUser.user_type == "Team Member") {
+              const res = await axios.get(`${apiURL}/shelters/${shelterData.id}/donations/${donationID}`);
+              console.log("Shelter ID:", shelterData.id);
+              console.log("Donation ID:", donationID);
+              console.log(res.data);
+              setCurrentDonationData(res.data);
+            }
           } catch (error) {
               console.error("Failed to fetch donation data:", error);
           }
       }
+
+      const getStatusBackgroundColor = (status: string) => {
+        switch (status) {
+          case "Pending":
+            return "lightgrey";
+          case "Accepted":
+            return "lightgreen";
+          case "Rejected":
+            return "red";
+          case "Cancelled":
+            return "red";
+        }
+      };
+
+      // Update donation status
+      const updateDonationStatus = async (status: string, donationID: number) => {
+        setLoading(true);
+        setError(null);
+        try {
+          if (currentUser.user_type == "Donor") {
+            const res = await axios.put(`${apiURL}/users/${currentUser.id}/donations/${donationID}/update`, { status });
+            console.log(res.data);
+            setCurrentDonationData(res.data);
+            await fetchUserData(); // Refresh user data to reflect changes
+          } else if (currentUser.user_type == "Team Member") {
+            const res = await axios.put(`${apiURL}/shelters/${shelterData.id}/donations/${donationID}/update`, { 
+              user_id: currentUser.id,
+              action: status 
+            });
+            console.log(res.data);
+            // setCurrentDonationData(res.data);
+            await fetchShelterData(); // Refresh shelter data to reflect changes
+          }
+        } catch (error) {
+          setError("Failed to update donation status");
+          console.error(error);
+        }
+        finally {
+          setLoading(false);
+          setCurrentDonationData(null); // Reset current donation data after update
+          setCurrentDonationID(null); // Reset current donation ID
+        }
+      }
+    
   
 
   return (
     <ApiContext.Provider
       value={{
         loading,
+        setLoading,
         error,
         formatDate,
         allShelters,
@@ -365,6 +428,9 @@ const downloadReport = async (reportID: number, fileType: string) => {
         currentDonationID,
         setCurrentDonationID,
         currentDonationData,
+        setCurrentDonationData,
+        getStatusBackgroundColor,
+        updateDonationStatus
       }}
     >
       {children}
