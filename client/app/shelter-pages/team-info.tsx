@@ -16,6 +16,10 @@ export default function TeamInfoScreen() {
       <Stack.Screen
         options={{
           title: "Team Members",
+          headerStyle: {
+            backgroundColor: Colors.light.tint,
+          },
+          headerTintColor: Colors.light.background,
         }}
       />
       <View style={Spacing.mainContainer}>
@@ -31,7 +35,12 @@ export default function TeamInfoScreen() {
             color: Colors.light.icon,
           }}
         />
-        <View style={[styles.row, { justifyContent: "space-between", marginBottom: 10 }]}>
+        <View
+          style={[
+            styles.row,
+            { justifyContent: "space-between", marginBottom: 10 },
+          ]}
+        >
           <Text style={styles.teamCount}>
             Result(s): {shelterData.staff.length}
           </Text>
@@ -40,51 +49,54 @@ export default function TeamInfoScreen() {
             buttonStyle={{ backgroundColor: "none" }}
           />
         </View>
-        
+
         <ScrollView>
-        {shelterData.staff.map((staffMember, index) => (
-          <View key={index} style={[styles.employeeCard, styles.row]}>
-            <Icon name="person" color={Colors.light.icon} size={50} />
+          {shelterData.staff.map((staffMember, index) => (
+            <View key={index} style={[styles.employeeCard, styles.row]}>
+              <Icon name="person" color={Colors.light.icon} size={50} />
 
-            <View style={styles.employeeInfo}>
-              <View style={styles.row}>
-                <Text style={styles.employeeName}>
-                  {staffMember.first_name} {staffMember.last_name}
-                </Text>
-                {staffMember.user_role === "Admin" ? (
-                  <Text
-                    style={[
-                      styles.userRole,
-                      { backgroundColor: Colors.light.tint },
-                    ]}
-                  >
-                    {staffMember.user_role}
+              <View style={styles.employeeInfo}>
+                <View style={styles.row}>
+                  <Text style={styles.employeeName}>
+                    {staffMember.first_name} {staffMember.last_name}
                   </Text>
-                ) : (
-                  <Text
-                    style={[styles.userRole, { backgroundColor: "lightgreen" }]}
-                  >
-                    {staffMember.user_role}
-                  </Text>
-                )}
+                  {staffMember.user_role === "Admin" ? (
+                    <Text
+                      style={[
+                        styles.userRole,
+                        { backgroundColor: Colors.light.tint },
+                      ]}
+                    >
+                      {staffMember.user_role}
+                    </Text>
+                  ) : (
+                    <Text
+                      style={[
+                        styles.userRole,
+                        { backgroundColor: "lightgreen" },
+                      ]}
+                    >
+                      {staffMember.user_role}
+                    </Text>
+                  )}
+                </View>
+                {/* <Text>{staffMember.email}</Text> */}
               </View>
-              {/* <Text>{staffMember.email}</Text> */}
-            </View>
 
-            <View style={styles.chevronContainer}>
-              <Button
-                icon={
-                  <Icon
-                    name="chevron-right"
-                    color={Colors.light.icon}
-                    size={30}
-                  />
-                }
-                type="clear"
-              />
+              <View style={styles.chevronContainer}>
+                <Button
+                  icon={
+                    <Icon
+                      name="chevron-right"
+                      color={Colors.light.icon}
+                      size={30}
+                    />
+                  }
+                  type="clear"
+                />
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
         </ScrollView>
       </View>
     </>

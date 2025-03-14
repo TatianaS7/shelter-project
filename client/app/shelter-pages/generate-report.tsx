@@ -109,6 +109,11 @@ export default function GenerateReportScreen() {
       <Stack.Screen
         options={{
           title: "Generate Report",
+          headerStyle: {
+            backgroundColor: Colors.light.tint,
+          },
+          headerTintColor: Colors.light.background,
+          
         }}
       />
 

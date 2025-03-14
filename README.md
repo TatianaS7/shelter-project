@@ -7,7 +7,7 @@ This application is designed to help homeless shelters manage their operations m
 [![My Skills](https://skillicons.dev/icons?i=react,ts,python,flask)](https://skillicons.dev)
 
 ##
-![flow-map](./shelter-project/assets/screenshots/flow%20map.png)
+![flow-map](./client/assets/screenshots/flow-map.png)
 
 <!-- ### Dashboard
 

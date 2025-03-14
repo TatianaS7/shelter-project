@@ -76,6 +76,11 @@ export default function ShelterInfoScreen() {
       <Stack.Screen
         options={{
           title: "Shelter Information",
+          headerStyle: {
+            backgroundColor: Colors.light.tint,
+          },
+          headerTintColor: Colors.light.background,
+
           headerRight: () => (
             <Icon
               name="edit"
@@ -122,7 +127,7 @@ export default function ShelterInfoScreen() {
               <View style={styles.addressRow}>
                 <Text style={styles.label}>State</Text>
                 <Text style={styles.label}>ZIP Code</Text>
-                </View>
+              </View>
               <View style={styles.addressRow}>
                 <TextInput
                   style={styles.addressInput}
@@ -169,7 +174,7 @@ export default function ShelterInfoScreen() {
                   value={isActive}
                   onValueChange={setIsActive}
                   disabled={!isEditing} // Disable switch when not in editing mode
-                  trackColor={{true: Colors.light.tint }} // Set track colors
+                  trackColor={{ true: Colors.light.tint }} // Set track colors
                 />
               </View>
 
@@ -228,6 +233,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-end", // Ensure that content fills available space
+    backgroundColor: "white",
   },
   scrollContainer: {
     padding: 20,
@@ -269,8 +275,8 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderRadius: 10,
     fontSize: 18,
-},
-numberInput: {
+  },
+  numberInput: {
     width: "45%",
     height: 40,
     borderColor: Colors.light.tint,

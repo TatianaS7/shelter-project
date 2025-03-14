@@ -14,8 +14,6 @@ import { router } from "expo-router";
 export default function ManageDonations() {
   const {
     currentDonationData,
-    setCurrentDonationData,
-    setCurrentDonationID,
     getStatusBackgroundColor,
     updateDonationStatus,
     currentUser,
