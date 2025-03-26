@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+    borderColor: Colors.light.tint,
+    // borderColor: "black",
+    borderWidth: 0.5,
   },
   employeeInfo: {
     flex: 1,

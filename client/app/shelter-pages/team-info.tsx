@@ -32,7 +32,7 @@ export default function TeamInfoScreen() {
           headerTintColor: Colors.light.background,
         }}
       />
-      <View style={Spacing.mainContainer}>
+      <View style={[Spacing.mainContainer, styles.main]}>
         <SearchBar
           placeholder="Search for a team member"
           platform="ios"
@@ -86,6 +86,10 @@ export default function TeamInfoScreen() {
 }
 
 const styles = StyleSheet.create({
+  main: {
+    backgroundColor: "white",
+    flex: 1,
+  },
   addMemberBtn: {
     justifyContent: "center",
     alignContent: "center",

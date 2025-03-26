@@ -44,7 +44,7 @@ export default function AddTeamMember({ isOpen, onClose }: AddTeamMemberProps) {
   return (
     <Modal
       visible={isOpen}
-      transparent={true}
+      // transparent={true}
       animationType="fade"
       onRequestClose={onClose}
     >
