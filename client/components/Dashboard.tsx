@@ -56,12 +56,7 @@ export default function Dashboard() {
 
     
     return (
-        <ScrollView
-            contentContainerStyle={[Spacing.mainContainer, styles.dashContainer]}
-            refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-        >
+        <>
             <View style={styles.headerContainer}>
                 <Text style={Fonts.pageTitle}>Overview</Text>
                 <HeaderTitle style={{ fontSize: 17, fontWeight: '500' }}>{formattedDate}</HeaderTitle>
@@ -70,6 +65,12 @@ export default function Dashboard() {
             </View>
             
             <Divider />
+            <ScrollView
+            contentContainerStyle={[Spacing.mainContainer, styles.dashContainer]}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        >
 
             <View id='widget-container' style={styles.widgetContainer}>
                 <View style={styles.widgetRow}>
@@ -140,8 +141,10 @@ export default function Dashboard() {
                         <Text style={Fonts.lightWidgetText}>${shelterData.funding_needs.toLocaleString()}</Text>
                     </View>
                 </View>
-            </View>
-        </ScrollView>
+                </View>
+                </ScrollView>
+
+            </>
     );
 }
 
@@ -151,7 +154,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     headerContainer: {
-        marginBottom: 20,
+        backgroundColor: "white",
+        padding: 20,
+
     },
     widgetContainer: {
         display: 'flex',
@@ -175,6 +180,8 @@ const styles = StyleSheet.create({
         minHeight: 120,
         width: 'auto',
         padding: 10,
+        boxShadow: "0px 6px 6px rgba(0, 0, 0, 0.25)",
+
     },
     recentDonationsWidget: {
         borderWidth: 2,
@@ -184,6 +191,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'white',
         width: '70%',
+        boxShadow: "0px 6px 6px rgba(0, 0, 0, 0.25)",
+
     },
     containers: {
         borderWidth: 2,
@@ -192,7 +201,9 @@ const styles = StyleSheet.create({
         minHeight: 120,
         width: 'auto',
         padding: 12,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        boxShadow: "0px 6px 6px rgba(0, 0, 0, 0.25)",
+
     },
     row: {
         flexDirection: 'row',

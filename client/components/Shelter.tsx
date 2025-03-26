@@ -97,6 +97,9 @@ export default function Shelter() {
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: "white"
+  },
   shelterDataContainer: {
     height: "auto",
     padding: 45,
