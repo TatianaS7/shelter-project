@@ -100,6 +100,7 @@ interface ApiContextType {
   setCurrentDonationData: (data: Donation | null) => void;
   getStatusBackgroundColor: (status: string) => string | undefined;
   updateDonationStatus: (status: string, donationID: number) => void;
+  createUser: (userData: User) => void;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -398,6 +399,26 @@ const downloadReport = async (reportID: number, fileType: string) => {
           setCurrentDonationID(null); // Reset current donation ID
         }
       }
+
+      // Create a new user
+      const createUser = async (userData: User) => {
+        setLoading(true);
+        setError(null);
+        try {
+          const res = await axios.post(`${apiURL}/users/register`, userData);
+          console.log(res.data);
+          // If team member, fetch shelter data again
+          if (userData.user_type === "TEAM_MEMBER") {
+            await fetchShelterData();        
+            await fetchAllShelters();
+      }
+        } catch (error) {
+          setError("Failed to create user");
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      }
     
   
 
@@ -430,7 +451,8 @@ const downloadReport = async (reportID: number, fileType: string) => {
         currentDonationData,
         setCurrentDonationData,
         getStatusBackgroundColor,
-        updateDonationStatus
+        updateDonationStatus,
+        createUser
       }}
     >
       {children}

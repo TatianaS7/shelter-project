@@ -1,15 +1,25 @@
-import React from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { Stack } from "expo-router";
 import { useApi } from "../ApiContext";
-import { Icon, SearchBar, Button, Divider } from "react-native-elements";
+import { Icon, SearchBar, Button } from "react-native-elements";
 import { Colors } from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { Buttons } from "@/constants/Buttons";
-import { HeaderTitle } from "@react-navigation/elements";
+import AddTeamMember from "@/components/AddTeamMemberForm";
+import EmployeeCard from "@/components/EmployeeCard";
 
 export default function TeamInfoScreen() {
-  const { shelterData, updateShelterData } = useApi();
+  const { shelterData } = useApi();
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenNewMember = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseNewMember = () => {
+    setOpenModal(false);
+  };
 
   return (
     <>
@@ -35,6 +45,21 @@ export default function TeamInfoScreen() {
             color: Colors.light.icon,
           }}
         />
+        <Button
+          title="Member"
+          buttonStyle={[Buttons.primarySolid, styles.addMemberBtn]}
+          icon={
+            <Icon
+              name="add"
+              type="ionicon"
+              size={25}
+              color={Colors.light.background}
+            />
+          }
+          onPress={() => {
+            setOpenModal(true);
+          }}
+        />
         <View
           style={[
             styles.row,
@@ -50,60 +75,23 @@ export default function TeamInfoScreen() {
           />
         </View>
 
-        <ScrollView>
-          {shelterData.staff.map((staffMember, index) => (
-            <View key={index} style={[styles.employeeCard, styles.row]}>
-              <Icon name="person" color={Colors.light.icon} size={50} />
+        {openModal && (
+          <AddTeamMember isOpen={openModal} onClose={handleCloseNewMember} />
+        )}
 
-              <View style={styles.employeeInfo}>
-                <View style={styles.row}>
-                  <Text style={styles.employeeName}>
-                    {staffMember.first_name} {staffMember.last_name}
-                  </Text>
-                  {staffMember.user_role === "Admin" ? (
-                    <Text
-                      style={[
-                        styles.userRole,
-                        { backgroundColor: Colors.light.tint },
-                      ]}
-                    >
-                      {staffMember.user_role}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={[
-                        styles.userRole,
-                        { backgroundColor: "lightgreen" },
-                      ]}
-                    >
-                      {staffMember.user_role}
-                    </Text>
-                  )}
-                </View>
-                {/* <Text>{staffMember.email}</Text> */}
-              </View>
-
-              <View style={styles.chevronContainer}>
-                <Button
-                  icon={
-                    <Icon
-                      name="chevron-right"
-                      color={Colors.light.icon}
-                      size={30}
-                    />
-                  }
-                  type="clear"
-                />
-              </View>
-            </View>
-          ))}
-        </ScrollView>
+        <EmployeeCard />
       </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  addMemberBtn: {
+    justifyContent: "center",
+    alignContent: "center",
+    width: 150,
+    alignSelf: "center",
+  },
   mainContainer: {
     margin: 20,
   },
@@ -111,34 +99,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
   },
-  employeeCard: {
-    padding: 10,
-    backgroundColor: Colors.light.background,
-    borderRadius: 5,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  employeeInfo: {
-    flex: 1,
-  },
   row: {
     flexDirection: "row",
     alignItems: "center",
     gap: 7,
-  },
-  employeeName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  userRole: {
-    fontSize: 16,
-    padding: 4,
-    borderRadius: 5,
-    color: "white",
-    fontWeight: "bold",
-  },
-  chevronContainer: {
-    justifyContent: "flex-end",
   },
 });
